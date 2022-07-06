@@ -1,6 +1,7 @@
 window.onload = () => {
 
     resetFormBtn();
+
 }
 
 
@@ -9,7 +10,7 @@ window.onload = () => {
 let outputs = document.getElementsByTagName('output');
 let ranges = document.querySelectorAll('input[type=range]');
 
-function func(i, val)  {
+function func(i, val) {
     outputs[i].value = val;
 };
 
@@ -28,16 +29,18 @@ function resetFormBtn() {
 };
 
 
-$(document).ready(function() {
-    $("#standStill").click(function()
-    {
+$(document).ready(function () {
+    $("#standStill").click(function () {
         console.log($(this).val());
-            $("#maxDistance").attr("disabled", "disabled");
+        $("#maxDistance").attr("disabled", "disabled");
     });
 
-    $("#patrol").click(function()
-    {
+    $("#patrol").click(function () {
         console.log($(this).val());
-            $("#maxDistance").removeAttr("disabled");
+        $("#maxDistance").removeAttr("disabled");
     });
 });
+
+
+
+
