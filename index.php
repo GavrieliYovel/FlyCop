@@ -19,13 +19,16 @@
   // get all data from DB
   if (!empty($_POST["loginMail"])) {
 
-    $query  = "SELECT * FROM tbl_users_209 where email ='" . $_POST["loginMail"] . "' and password = '" . $_POST["loginPass"] . "'";
+    $query  = "SELECT * FROM tbl_users_209 INNER JOIN tbl_roles_209 USING (roleId) where email ='" . $_POST["loginMail"] . "' and password = '" . $_POST["loginPass"] . "'";
+    $queryViolations  = "SELECT * FROM tbl_violation_209 ORDER BY violationId DESC LIMIT 5";
 
     $result = mysqli_query($connection, $query);
+    $Violations = mysqli_query($connection, $queryViolations);
 
-    if (!$result) {
+    if (!$result || !$Violations) {
       die("DB query failed.");
     }
+
     $row = mysqli_fetch_assoc($result);
     if (is_array($row)) {
       session_start();
@@ -61,20 +64,23 @@
       </div>
       <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                         else echo 'style:"display: flex"'; ?>>
-        <img id="personImg" src="images/haim.png" alt="">
-        <div class="text-white">
-          <h5>Haim</h5>
-          <p>traffic police officer</p>
-          <div class="d-flex">
-            <a href="#"><i class="bi bi-person-circle"></i></a>
-            <a href="#"><i class="bi bi-gear-fill"></i></a>
-            <a href="#"><i class="bi bi-door-closed-fill"></i></a>
-          </div>
+        <?php
+
+        echo '<img id="personImg" src="' . $row["img"] . '" alt="">';
+        echo '<div class="text-white">';
+        echo '<h5>' . $row["firstName"] . ' ' . $row["lastName"] . '</h5>';
+        echo '<p>' . $row["roleName"] . '</p>';
+        ?>
+        <div class="d-flex">
+          <a href="#"><i class="bi bi-person-circle"></i></a>
+          <a href="#"><i class="bi bi-gear-fill"></i></a>
+          <a href="#"><i class="bi bi-door-closed-fill"></i></a>
         </div>
       </div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
     </div>
   </nav>
@@ -85,7 +91,7 @@
       <li><i class="bi bi-caret-right"></i></i><a href="#">Home Screen</a></li>
     </ul>
 
-    <div class="container" <?php if (isset($_SESSION["user"])) echo 'style="display: none;"'; ?>>
+    <div class="container width-50" <?php if (isset($_SESSION["user"])) echo 'style="display: none;"'; ?>>
       <h1>Login</h1>
       <form action="#" method="post" id="frm">
         <div class="form-group">
@@ -133,64 +139,35 @@
 
       </div>
 
-      <!-- <div id ="map">  
-        <script>
-          
-        function initMap() {
-               var location = { lat: 30.979205, lng: 35.248204 };
-                var map = new google.maps.Map(document.getElementById("map"), {
-                 zoom: 10,
-                  center: location
-             });
-}
-         </script>
-      </div> -->
-
 
       <div class="grayBack recentViolations" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                                               else echo 'style:"display: block"'; ?>>
         <h4 class="row align-self-end justify-content-center">Recent Violations</h4>
 
         <div class="violations">
-          <table class="w-100">
-            <tr class="border-bottom border-dark align-items-end d-flex justify-content-between">
-              <td class="startLine">
-                <img src="images/signYel.png" class="signIcn">
-                Speeding
-              </td>
-              <td>
-                12:24
-              </td>
-              <td>
-                2/1
-              </td>
-            </tr>
-            <tr class="border-bottom border-dark align-items-end d-flex justify-content-between">
-              <td class="startLine">
-                <img src="images/signGr.png" class="signIcn">
-                Dangerous bypassing
-              </td>
-              <td>
-                11:42
-              </td>
-              <td>
-                2/1
-              </td>
-            </tr>
-            <tr class="border-bottom border-dark align-items-end d-flex justify-content-between">
-              <td class="startLine">
-                <img src="images/signRed.png" class="signIcn">
-                Passing Red Light
-              </td>
+          <table class="w-100 ">
 
-              <td>
-                10:34
-              </td>
-              <td>
-                2/1
-              </td>
-            </tr>
+            <?php
+            while ($violation = mysqli_fetch_assoc($Violations)) {
+              echo '<tr class="border-bottom border-dark align-items-end d-flex justify-content-between">';
+              echo ' <td class="startLine">';
+              switch ($violation["severity"]) {
+                case 1:
+                  echo '<img  src="images/signGr.png" class ="signIcn">' . $violation["type"] . '</td>';
+                  break;
+                case 2:
+                  echo '<img  src="images/signYel.png" class ="signIcn">' . $violation["type"] . '</td>';
+                  break;
+                case 3:
+                  echo '<img  src="images/signRed.png" class ="signIcn">' . $violation["type"] . '</td>';
+                  break;
+              }
 
+              echo '<td>' . $violation["timeV"] . '</td>';
+              echo '<td>' . $violation["dateV"] . '</td>';
+              echo '</tr> ';
+            }
+            ?>
           </table>
         </div>
 
