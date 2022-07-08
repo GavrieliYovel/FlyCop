@@ -1,10 +1,8 @@
 window.onload = () => {
 
     resetFormBtn();
-
+    checkBeforeDelete();
 }
-
-
 
 
 let outputs = document.getElementsByTagName('output');

@@ -110,9 +110,13 @@
     </div>
 
 
-    <div id="mainObjContent" <?php if (isset($_SESSION["role"])) {
-                                if ($_SESSION["role"] == 1) echo 'style="display: block;"';
-                              } else echo 'style = "display:none;"'; ?>>
+    <div id="mainObjContent" <?php if (!isset($_SESSION["role"])) {
+                                 echo 'style = "display:none;"'; } 
+                                else  {
+                                if ($_SESSION["role"] == 1){ echo 'style="display: block;"';}
+                                else echo 'style = "display:none;"';}
+                             ?>>
+
       <div class="quickActions grayBack">
         <button class="grayBtn align-self-start"><i class="bi bi-arrow-left-right"></i></button>
         <h4 class="row align-self-end justify-content-center">Quick Actions</h4>
@@ -179,7 +183,8 @@
   if (isset($result))
     mysqli_free_result($result);
   ?>
-
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXsotvk0TYy-TxHJw7DZe5e-prFbtvLbs&callback=initMap">
   </script>

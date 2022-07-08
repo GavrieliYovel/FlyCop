@@ -1,3 +1,13 @@
+<?php
+    session_start();
+    if (!isset($_SESSION["role"])) {
+        header('Location: http://localhost/finalDeployment');
+    } 
+    elseif($_SESSION["role"] != 1) {
+        header('Location: http://localhost/finalDeployment');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +69,7 @@
     <div id="listWrapper">   
         <div class="d-flex justify-content-between">
             <h1>Active Drones</h1>
-            <a href="#"><i class="fs-2 bi bi-plus-square"></i></a>
+            <a href="createobject.php"><i class="fs-2 bi bi-plus-square"></i></a>
         </div>
         <?php 
             include "config.php";

@@ -1,3 +1,22 @@
+<?php 
+  include "config.php";
+  
+  if(isset($_POST["mission"])) {
+    $mis = $_POST["mission"];
+    $dis = $_POST["distance"];
+    $alt = $_POST["altitude"];
+    $tm = $_POST["time"];
+    $date = date("m.d.y");
+    $time = date('H:i:s');
+    $query  = "INSERT INTO tbl_activeDrones_209(missionType, maxAltitude, maxDistance, 'date', startTime, endTime, 'user_id', droneId) 
+                VALUES('$mis', $alt, $dis,$date,  )" ;
+    mysqli_query($connection, $query);
+    header('Location: http://localhost/finalDeployment/dronelist.php');
+  }
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +30,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet">
 
 
-    <title>#235 Edit</title>
+    <title>Create Mission</title>
   </head>
   <body>
 
@@ -57,23 +76,19 @@
       </nav>
     <main>
       <!-- breadcrumbs -->
-      <ul class="breadcrumbs">
-        <li><i class="bi bi-caret-right"></i></i><a href="index.html">Home Screen</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="dronelist.html">Active Drones</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="mainobject.html">Drone #235</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="#">Edit</a></li>
-      </ul>
-      <div id="editObj">
-        <h1>Drone #235</h1>
-        <table>
-          <tr>
-            <th>Set by:</th>
-            <td>Haim </td>
-            <th>Start Time:</th>
-            <td>9:30</td>
-          </tr>
-        </table>
-        <form class="editForm" action="editmission.php" method="get">
+        <ul class="breadcrumbs">
+            <li><i class="bi bi-caret-right"></i><a href="index.html">Home Screen</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="dronelist.html">Active Drones</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="#">Create Mission</a></li>
+        </ul>
+        <?php echo date('H:i:s');
+            echo '<br>';
+            $time = time() + (7 * 24 * 60 * 60);
+            echo $time;
+            ?>
+        <h1>Create Mission</h1>
+
+        <form class="editForm" action="#" method="post">
           <div>
             <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
             <p class="fw-bold">Mission:</p>
@@ -124,22 +139,17 @@
           </div> 
         
           <div class="buttonGroup d-flex justify-content-end">
-            <a class="btn btn-danger btn-md" href="#" role="button"><img src="images/stopIcn.png" alt=""> End Mission</a>
-            <a class="text-white btn btn-warning btn-md" href="#" role="button"><i class="bi bi-x-circle"></i> Abort</a>
             <button type="submit" value="Submit" class="btn btn-success btn-md"><i class="bi bi-check-lg"></i>Submit</button>
           </div>
-      </form>
-      </div>
-    </main>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
+        </form>
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="scripts/editscript.js"></script>
     
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="scripts/editscript.js"></script>
   </body>
 </html>

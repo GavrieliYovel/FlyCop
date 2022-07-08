@@ -1,3 +1,12 @@
+<?php
+  include "config.php";
+  
+  if(isset($_POST['delete'])) {
+    $query3  = "DELETE FROM tbl_activeDrones_209 where missionId= " . $_POST["id"] ;
+    mysqli_query($connection, $query3);
+    header('Location: http://localhost/finalDeployment/dronelist.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,7 +22,6 @@
   </head>
   <body>
   <?php 
-    include "config.php";
     $missId = $_GET["mission_id"];
     $query1  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_users_209 using(user_id) where missionId=" . $missId;
     $result1 = mysqli_query($connection, $query1);
@@ -120,7 +128,10 @@
               </tr>
           </table> 
           <div class="d-flex justify-content-center">
-            <button class="btn btn-danger btn-sm"> <img src="images/stopIcn.png"> Stop Misision</button>
+                <form method='POST' id="check">
+                <input type=hidden name=id value=" <?php echo $missId ?>">
+                <input type=submit value=Delete name=delete  >
+                </form>
           </div>
 
           </section>
@@ -214,6 +225,7 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script src="scripts/mainobjscript.js"></script>
   </body>
 </html>
 <?php 
