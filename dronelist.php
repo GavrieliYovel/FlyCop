@@ -24,46 +24,49 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"></a>
+            <a class="navbar-brand" href="index.php"></a>
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header ">
-                    <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-                    <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+                  <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">New Mission</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Active Drones</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Violations</a>
-                        </li>
-                    </ul>
+                  <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                          else echo 'style:"display: flex"'; ?>>
+                    <li class="nav-item">
+                      <a class="nav-link " href="createobject.php">New Mission</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="dronelist.php">Active Drones</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Violations</a>
+                    </li>
+                  </ul>
                 </div>
             </div>
-            <div id="person">
-                <img id="personImg" src="images/haim.png" alt="">
-                <div class="text-white">
-                    <h5>Haim</h5>
-                    <p>traffic police officer</p>  
-                    <div class="d-flex">
-                        <a href="#"><i class="bi bi-person-circle"></i></a>
-                        <a href="#"><i class="bi bi-gear-fill"></i></a>
-                        <a href="#"><i class="bi bi-door-closed-fill"></i></a>
-                    </div>
+            <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                            else echo 'style:"display: flex"'; ?>>
+                <?php
+                  echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+                  echo '<div class="text-white">';
+                  echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+                  echo '<p>' . $_SESSION["rName"] . '</p>';
+                ?>
+                <div class="d-flex">
+                <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
+                <a href="#"><i class="bi bi-gear-fill"></i></a> -->
+                <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
                 </div>
             </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
         </div>
-      </nav>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
     <ul class="breadcrumbs">
-        <li><i class="bi bi-caret-right"></i></i><a href="index.html">Home Screen</a></li>
+        <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
         <li><i class="bi bi-caret-right"></i></i><a href="#">Active Drones</a></li>
     </ul>
     <div id="listWrapper">   

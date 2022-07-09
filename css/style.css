@@ -164,7 +164,7 @@ ul.breadcrumbs li a:hover {
 #vioDet{
     background: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
-    margin-top: 30px;
+    margin:30px 0px;
     width: 100%;
     padding: 20px;
 }
@@ -331,6 +331,25 @@ h6{
 }
 .container{
     height: 100%;
+}
+
+/*----------------Create Object-----------------------*/
+.wrapper {
+    margin: 25px auto;
+    width: 85%;
+}
+
+
+/*----------------Violation List-----------------------*/
+
+.violationList {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.violationList a{
+    text-decoration: none;
+    color: #000000;
 }
 
 

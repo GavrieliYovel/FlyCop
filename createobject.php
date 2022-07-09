@@ -1,17 +1,29 @@
 <?php 
   include "config.php";
-  
+  include "urldefine.php";
+  session_start();
+  if (!isset($_SESSION["role"])) {
+    header('Location: '. URL);
+  } 
+  elseif($_SESSION["role"] != 1) {
+    header('Location:'. URL);
+  }
+
   if(isset($_POST["mission"])) {
     $mis = $_POST["mission"];
     $dis = $_POST["distance"];
     $alt = $_POST["altitude"];
     $tm = $_POST["time"];
+    $dId = $_POST["drone"];
     $date = date("m.d.y");
-    $time = date('H:i:s');
-    $query  = "INSERT INTO tbl_activeDrones_209(missionType, maxAltitude, maxDistance, 'date', startTime, endTime, 'user_id', droneId) 
-                VALUES('$mis', $alt, $dis,$date,  )" ;
+    $start = date('H:i:s');
+    $end = date('H:i:s',strtotime('+'.$tm.' minutes',strtotime($start)));
+    $query  = "INSERT INTO tbl_activeDrones_209(missionType, maxAltitude, maxDistance, date, startTime, endTime, user_id, droneId) 
+                VALUES('".$mis."',".$alt.",".$dis.",'".$date."','".$start."', '".$end."', ".$_SESSION['user'].", ".$dId.")";
     mysqli_query($connection, $query);
-    header('Location: http://localhost/finalDeployment/dronelist.php');
+    $query2  = "UPDATE tbl_drones_209 SET isAssign = 1 WHERE droneId = ".$dId;
+    mysqli_query($connection, $query2);
+    header('Location: ' . URL . 'dronelist.php');
   }
 
 ?>
@@ -34,86 +46,84 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"></a>
-            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header ">
-                    <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-                    <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">New Mission</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="dronelist.html">Active Drones</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Violations</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="person">
-                <img id="personImg" src="images/haim.png" alt="">
-                <div class="text-white">
-                    <h5>Haim</h5>
-                    <p>traffic police officer</p>  
-                    <div class="d-flex">
-                        <a href="#"><i class="bi bi-person-circle"></i></a>
-                        <a href="#"><i class="bi bi-gear-fill"></i></a>
-                        <a href="#"><i class="bi bi-door-closed-fill"></i></a>
-                    </div>
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="index.php"></a>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+              <div class="offcanvas-header ">
+                <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+                <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                        else echo 'style:"display: flex"'; ?>>
+                  <li class="nav-item">
+                    <a class="nav-link " href="createobject.php">New Mission</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link " href="dronelist.php">Active Drones</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Violations</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+          <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                          else echo 'style:"display: flex"'; ?>>
+              <?php
+                echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+                echo '<div class="text-white">';
+                echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+                echo '<p>' . $_SESSION["rName"] . '</p>';
+              ?>
+              <div class="d-flex">
+              <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
+              <a href="#"><i class="bi bi-gear-fill"></i></a> -->
+              <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
+              </div>
+          </div>
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
     <main>
       <!-- breadcrumbs -->
         <ul class="breadcrumbs">
-            <li><i class="bi bi-caret-right"></i><a href="index.html">Home Screen</a></li>
-            <li><i class="bi bi-caret-right"></i><a href="dronelist.html">Active Drones</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="dronelist.php">Active Drones</a></li>
             <li><i class="bi bi-caret-right"></i><a href="#">Create Mission</a></li>
         </ul>
-        <?php echo date('H:i:s');
-            echo '<br>';
-            $time = time() + (7 * 24 * 60 * 60);
-            echo $time;
-            ?>
-        <h1>Create Mission</h1>
 
-        <form class="editForm" action="#" method="post">
-          <div>
-            <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
-            <p class="fw-bold">Mission:</p>
-            <div class="form-group d-flex align-items-center">
+        <div class = "wrapper">
+          <h1>Create Mission</h1>
+          <form  action="#" method="post">
+            <div>
+              <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
+              <p class="fw-bold">Mission:</p>
+              <div class="form-group d-flex align-items-center">
                 
-                <input class="form-check-input align-self-center" type="radio" name="mission" value="patrol" checked id="patrol">
+                <input class="form-check-input align-self-center" type="radio" name="mission" value="Patrol" checked id="patrol">
                 <label class="form-check-label" for="inlineRadio1">Patrol</label>
-        
-                <input class="form-check-input align-self-center" type="radio" name="mission" value="standstill" id="standStill">
+                
+                <input class="form-check-input align-self-center" type="radio" name="mission" value="Stand Still" id="standStill">
                 <label class="form-check-label" for="inlineRadio2">Stand still</label>
+              </div>
             </div>
-          </div>
-        
-          <div class="form-group">
-            <div class="d-flex">
+            
+            <div class="form-group">
+              <div class="d-flex">
               <label class="form-label">Duration: </label>
               <div class="badge bg-dark d-flex justify-content-center">
                 <output>125</output> <span>mins</span>
-            </div>
+              </div>
             </div>    
             <div class="d-flex align-items-center">
               <p>20 mins </p><input type="range" name="time" class="form-range"  min="20" max="300" value="125" step="5" oninput="func(0, this.value);"><p> 300 mins</p>
             </div>  
           </div>
-
+          
           <div class="form-group">
             <div class="d-flex">
               <label  class="form-label">Avg. Altitude: </label>
@@ -125,7 +135,7 @@
               <p>3 m </p><input type="range" name="altitude" class="form-range align-self-end"  min="3" max="10" value="5.2" step="0.2" oninput="func(1, this.value);"><p> 10 m</p>
             </div> 
           </div>
-
+          
           <div class="form-group">
             <div class="d-flex">
               <label  class="form-label">Max distance: </label>
@@ -137,19 +147,34 @@
               <p>25 m </p><input type="range" name="distance" class="form-range align-self-end"  min="25" max="2500" value="500" step="1" oninput="func(2, this.value);"  id="maxDistance"><p> 2500 m</p>
             </div>    
           </div> 
-        
+          
+          <div class="form-group">
+            <label  class="form-label">Choose Drone: </label>
+            <select name="drone" class="form-select" aria-label="Default select example">
+              <?php 
+                  $query1  = "SELECT * FROM tbl_drones_209 WHERE isAssign = 0";
+                  $result = mysqli_query($connection, $query1);
+                  if(!$result) {
+                    die("DB query failed.");
+                  }
+                  while($row = mysqli_fetch_assoc($result)) {
+                    echo "<option value ='".$row["droneId"]."'>Drone #".$row["droneId"]."</option>";
+                  }
+                  ?>
+            </select>
+          </div>
+          
           <div class="buttonGroup d-flex justify-content-end">
             <button type="submit" value="Submit" class="btn btn-success btn-md"><i class="bi bi-check-lg"></i>Submit</button>
           </div>
         </form>
-    
+      </div>
+        <?php mysqli_free_result($result); ?>
 
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="scripts/editscript.js"></script>
-    
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="scripts/editscript.js"></script>
+  
   </body>
 </html>
