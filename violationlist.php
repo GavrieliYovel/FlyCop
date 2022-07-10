@@ -6,7 +6,7 @@
     if(!empty($_POST["sort"])) {
         switch($_POST["sort"]) {
             case "date":
-                $query  = "SELECT * FROM tbl_violation_209 ORDER BY dateV";
+                $query  = "SELECT * FROM tbl_violation_209 ORDER BY dateV, timeV";
                 break;
             case "severity":
                 $query  = "SELECT * FROM tbl_violation_209 ORDER BY severity DESC";

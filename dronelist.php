@@ -1,10 +1,11 @@
 <?php
+    include "urldefine.php";
     session_start();
     if (!isset($_SESSION["role"])) {
-        header('Location: http://localhost/finalDeployment');
+      header('Location: '. URL);
     } 
     elseif($_SESSION["role"] != 1) {
-        header('Location: http://localhost/finalDeployment');
+      header('Location: '. URL);
     }
 ?>
 
