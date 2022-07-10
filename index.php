@@ -19,16 +19,16 @@
   include "urldefine.php";
   session_start();
   if (!isset($_SESSION["user"])) {
-    if (!empty($_POST["loginMail"])) { 
+    if (!empty($_POST["loginMail"])) {
 
       $query  = "SELECT * FROM tbl_users_209 INNER JOIN tbl_roles_209 USING (roleId) where email ='" . $_POST["loginMail"] . "' and password = '" . $_POST["loginPass"] . "'";
-      
+
       $result = mysqli_query($connection, $query);
-      
+
       if (!$result) {
         die("DB query failed.");
       }
-      
+
       $row = mysqli_fetch_assoc($result);
       if (is_array($row)) {
         $_SESSION["user"] = $row["user_id"];
@@ -37,50 +37,51 @@
         $_SESSION["lName"] = $row["lastName"];
         $_SESSION["fName"] = $row["firstName"];
         $_SESSION["rName"] = $row["roleName"];
-        
       } else
-      $message = "Invalid username or password!";
+        $message = "Invalid username or password!";
     }
   }
-    
+
   ?>
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"></a>
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header ">
-              <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-              <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                                                      else echo 'style:"display: flex"'; ?>>
-                <li class="nav-item">
-                  <a class="nav-link " href="createobject.php">New Mission</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="dronelist.php">Active Drones</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="violationlist.php">Violations</a>
-                </li>
-              </ul>
-            </div>
+      <a class="navbar-brand" href="#"></a>
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header ">
+          <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+          <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+        <div class="offcanvas-body">
+          <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                  else echo 'style:"display: flex"'; ?>>
+            <li class="nav-item">
+              <a class="nav-link " href="createobject.php">New Mission</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="dronelist.php">Active Drones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="violationlist.php">Violations</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                         else echo 'style:"display: flex"'; ?>>
-            <?php
-              echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
-              echo '<div class="text-white">';
-              echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
-              echo '<p>' . $_SESSION["rName"] . '</p>';
-            ?>
-            <div class="d-flex">
-            <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
+        <?php
+        if (isset($_SESSION["user"])) {
+          echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+          echo '<div class="text-white">';
+          echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+          echo '<p>' . $_SESSION["rName"] . '</p>';
+        }
+        ?>
+        <div class="d-flex">
+          <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
             <a href="#"><i class="bi bi-gear-fill"></i></a> -->
-            <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
-            </div>
+          <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
         </div>
+      </div>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -113,11 +114,13 @@
 
 
     <div id="mainObjContent" <?php if (!isset($_SESSION["role"])) {
-                                 echo 'style = "display:none;"'; } 
-                                else  {
-                                if ($_SESSION["role"] == 1){ echo 'style="display: block;"';}
-                                else echo 'style = "display:none;"';}
-                             ?>>
+                                echo 'style = "display:none;"';
+                              } else {
+                                if ($_SESSION["role"] == 1) {
+                                  echo 'style="display: block;"';
+                                } else echo 'style = "display:none;"';
+                              }
+                              ?>>
 
       <div class="quickActions grayBack">
         <button class="grayBtn align-self-start"><i class="bi bi-arrow-left-right"></i></button>
@@ -191,7 +194,7 @@
   if (isset($result))
     mysqli_free_result($result);
   ?>
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXsotvk0TYy-TxHJw7DZe5e-prFbtvLbs&callback=initMap">

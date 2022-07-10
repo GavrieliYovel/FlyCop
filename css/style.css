@@ -3,11 +3,13 @@
     margin: 0px;
     font-size: clamp(5px, 3vw, 18px)
 }
+
 body {
-    background-color:#bdb9b9;
+    background-color: #bdb9b9;
     white-space: nowrap;
     font-family: 'Ubuntu', sans-serif;
 }
+
 /*----------------Navbar-----------------------*/
 
 #personImg {
@@ -23,6 +25,7 @@ body {
     align-items: center;
     margin-right: 25px;
 }
+
 #person p {
     margin: 0px;
 }
@@ -45,6 +48,7 @@ body {
     filter: brightness(0) invert(1);
 
 }
+
 .offcanvas-start {
     background-color: #212529;
 }
@@ -53,14 +57,14 @@ body {
     background-color: #212529;
 }
 
-.navbar { 
+.navbar {
     padding: 0px;
     white-space: nowrap;
 }
 
 
 /*----------------General-----------------------*/
-.grayBtn{
+.grayBtn {
     position: relative;
     float: right;
     background-color: gray;
@@ -72,9 +76,9 @@ body {
     border: none;
 }
 
-.grayBtn img{
-    width:auto;
-    height:auto;
+.grayBtn img {
+    width: auto;
+    height: auto;
     max-width: 25px;
     max-height: 25px;
     position: relative;
@@ -86,7 +90,7 @@ body {
     margin: 25px 25px 0px 0px;
 }
 
-.btn { 
+.btn {
     border-radius: 40px;
     white-space: nowrap;
 }
@@ -98,12 +102,12 @@ body {
 ul.breadcrumbs {
     padding: 10px 16px;
     list-style: none;
-  }
-  
+}
+
 
 ul.breadcrumbs li {
     display: inline;
-  }
+}
 
 ul.breadcrumbs li a {
     text-decoration: none;
@@ -114,9 +118,9 @@ ul.breadcrumbs li a {
 ul.breadcrumbs li a:hover {
     color: black;
     font-weight: bold;
-  }
+}
 
-  .btn-sm {
+.btn-sm {
     margin-top: 20px;
 }
 
@@ -130,126 +134,130 @@ ul.breadcrumbs li a:hover {
     width: 30%;
 }
 
-#mainObjContent{
-      margin: auto 5% ;
-      margin-top: 1%;
+#mainObjContent {
+    margin: auto 5%;
+    margin-top: 1%;
 
 }
 
-#missionProperties{
-    width:35%;
+#missionProperties {
+    width: 35%;
     margin-top: 3%;
-  }
+}
 
-#missSet{
+#missSet {
     background: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
     margin-top: 40px;
     width: 50%;
     padding: 20px;
-  }
+}
 
 
 .bi-pencil-fill::before {
     position: relative;
     color: white;
-    left:5px;
-    top:-2px;
+    left: 5px;
+    top: -2px;
 }
 
-#missonSetTbl{
+#missonSetTbl {
     width: 100%;
 }
 
-#vioDet{
+#vioDet {
     background: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
-    margin:30px 0px;
+    margin: 30px 0px;
     width: 100%;
     padding: 20px;
 }
 
-.signIcn{
-    width:auto;
-    height:auto;
+.signIcn {
+    width: auto;
+    height: auto;
     max-width: 35px;
     max-height: 35px;
 }
 
-.vioDet{
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      width:80%;
-      margin-left: 20px;
-      align-items: flex-end;
+.vioDet {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 20px;
+    align-items: flex-end;
 
 }
 
-[class^="bi-"]::before, [class*=" bi-"]::before{
-      position: relative;
-      bottom: 3px;
-      color:white;
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+    position: relative;
+    bottom: 3px;
+    color: white;
 }
 
 /*----------------Edit Object Page---------------*/
 
-#editObj{
+#editObj {
     width: 65%;
     display: flex;
     flex-direction: column;
     margin: 50px;
     height: 100%;
     white-space: nowrap;
- }
+}
 
 
- #editObj table{
-    width: 30%; 
+#editObj table {
+    width: 30%;
     margin: 15px 0px 15px 0px;
- }
- #editObj th{
-     width:15%;
- }
- 
-.form-check-input{
+}
+
+#editObj th {
+    width: 15%;
+}
+
+.form-check-input {
     margin-top: 2%;
     margin-right: 1%;
 }
-  
+
 
 .form-check-input:checked {
     background-color: #000000;
     border-color: #424242;
 }
 
-.form-range{
+.form-range {
     width: 80%;
     margin-left: 2%;
-    margin-right:2%;
+    margin-right: 2%;
 }
 
-.editForm{
+.editForm {
     display: flex;
     flex-direction: column;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
 }
 
-.bg-dark{
+.bg-dark {
     height: 50%;
     margin-left: 20px;
 }
 
 .form-group {
-    margin:25px 0px;
+    margin: 25px 0px;
 }
+
 .form-group label {
     width: 22%;
     margin-top: 2%;
     margin-right: 15px;
     font-weight: bold;
 }
+
 .form-group p {
     width: 15%;
 }
@@ -278,9 +286,9 @@ ul.breadcrumbs li a:hover {
     white-space: nowrap;
 }
 
-.tableStyle th { 
+.tableStyle th {
     width: 20%;
-    
+
 }
 
 .droneObject {
@@ -302,8 +310,8 @@ ul.breadcrumbs li a:hover {
 
 
 /*----------------Home Page-----------------------*/
-.grayBack{
-    background-color:rgba(255, 255, 255, 0.4);
+.grayBack {
+    background-color: rgba(255, 255, 255, 0.4);
     padding: 20px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -317,19 +325,21 @@ ul.breadcrumbs li a:hover {
     width: 75%;
 }
 
-.quickIcn{
+.quickIcn {
     height: 80px;
     width: 80px;
     margin-bottom: 5px;
 }
 
-h6{
+h6 {
     margin-bottom: 0;
 }
-.bord{
+
+.bord {
     border-bottom: 1px solid rgba(0, 0, 0, 0.252);
 }
-.container{
+
+.container {
     height: 100%;
 }
 
@@ -347,18 +357,19 @@ h6{
     padding: 0px;
 }
 
-.violationList a{
+.violationList a {
     text-decoration: none;
     color: #000000;
 }
 
 
+
+
 /* Media Responsive */
 
 
-@media only screen and (max-width: 1450px) 
-{
-    
+@media only screen and (max-width: 1450px) {
+
     /* Navbar */
     .navbar-brand {
         width: 150px;
@@ -393,20 +404,22 @@ h6{
     }
 
     /* Main Object */
-    #missSet{
+    #missSet {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         width: 100%;
     }
 
-    #missionProperties{
-        width:50%;
-      }
-    .signIcn{
+    #missionProperties {
+        width: 50%;
+    }
+
+    .signIcn {
         width: 25px;
         height: 25px;
     }
+
     .grayBtn img {
         width: 20px;
         height: 20px;
@@ -417,16 +430,16 @@ h6{
     .quickActions {
         width: 100%;
     }
-    
+
     .recentViolations {
         width: 100%;
     }
-    
+
 
 }
 
-@media only screen and (max-width: 500px) 
-{
+@media only screen and (max-width: 500px) {
+
     /* Navbar */
     .navbar-brand {
         width: 100px;
@@ -437,6 +450,7 @@ h6{
         width: 75px;
         height: 50px;
     }
+
     /* Drone List */
     .imgStyle {
         width: 75px;
@@ -451,19 +465,10 @@ h6{
         display: flex;
         flex-wrap: wrap;
     }
+
     .grayBtn {
         width: 25px;
         height: 25px;
     }
-  
+
 }
-/* 
-#map{
-    height: 500px;
-    width: 500px;
-}
-    
-
- */
-
-
