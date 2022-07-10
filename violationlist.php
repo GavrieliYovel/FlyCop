@@ -90,6 +90,7 @@ if (!$result) {
     </ul>
     <div class="wrapper">
       <h1>Violations List</h1>
+      <a href="createviolation.php"><i class="fs-2 bi bi-plus-square"></i></a>
       <!-- Violations Detected -->
       <section id="vioDet">
         <h2>Violations Detected: </h2>

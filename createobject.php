@@ -15,7 +15,7 @@
     $alt = $_POST["altitude"];
     $tm = $_POST["time"];
     $dId = $_POST["drone"];
-    $date = date("m.d.y");
+    $date = date("y.m.d");
     $start = date('H:i:s');
     $end = date('H:i:s',strtotime('+'.$tm.' minutes',strtotime($start)));
     $query  = "INSERT INTO tbl_activeDrones_209(missionType, maxAltitude, maxDistance, date, startTime, endTime, user_id, droneId) 

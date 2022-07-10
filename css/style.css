@@ -270,6 +270,10 @@ ul.breadcrumbs li a:hover {
     margin-right: 25px;
 }
 
+.buttonGroup button {
+    margin-right: 25px;
+}
+
 /*----------------Drone List Page-----------------------*/
 
 #listWrapper {

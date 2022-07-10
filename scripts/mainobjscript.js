@@ -3,7 +3,7 @@ window.onload = () => {
 }
 
 function checkBeforeDelete() {
-    document.getElementById("check").onsubmit = () => {
+    document.getElementById("check").onclick = () => {
         let agree = confirm("Are you sure you want to delete?");
         if(agree)
             return true;

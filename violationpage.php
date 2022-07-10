@@ -3,6 +3,24 @@ include "config.php";
 include "urldefine.php";
 session_start();
 
+if(isset($_POST['delete'])) {
+    $query2  = "DELETE FROM tbl_violation_209 WHERE violationId= " . $_POST["vioId"] ;
+    mysqli_query($connection, $query2);
+    header('Location: '. URL .'violationlist.php');
+}
+
+if(isset($_POST["confirm"])) {
+    $query1 = "UPDATE tbl_violation_209 SET 
+                                        details= '" . $_POST["vDetails"] . "', 
+                                        type ='" . $_POST["vType"] . "', 
+                                        severity= " . $_POST["vSeverity"] . ",  
+                                        carNumber= " . $_POST["vCarNumber"] . ", 
+                                        timeV= '" . $_POST["vTime"] . "',
+                                        dateV= '" . $_POST["vDate"] . "' WHERE violationId= ". $_POST["vioId"];
+
+    mysqli_query($connection, $query1);
+}
+
 //   if(isset($_POST['delete'])) {
 //     $query3  = "DELETE FROM tbl_activeDrones_209 where missionId= " . $_POST["mission"] ;
 //     mysqli_query($connection, $query3);
@@ -13,7 +31,7 @@ session_start();
 
 
 $vioId = $_GET["vId"];
-$query  = "SELECT * FROM tbl_violation_209  where violationId=" . $vioId;
+$query  = "SELECT * FROM tbl_violation_209  WHERE violationId=" . $vioId;
 $result = mysqli_query($connection, $query);
 if ($result) {
     $violation = mysqli_fetch_assoc($result);
@@ -70,7 +88,7 @@ if ($result) {
                 ?>
                 <div class="d-flex">
                     <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
-              <a href="#"><i class="bi bi-gear-fill"></i></a> -->
+                    <a href="#"><i class="bi bi-gear-fill"></i></a> -->
                     <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
                 </div>
             </div>
@@ -91,7 +109,7 @@ if ($result) {
         <div id="mainObjContent">
             <h1>Violation #<?php echo $vioId ?></h1>
             <form action="#" method="POST">
-                <div class="d-flex justify-content-between w-50 grayBack flex-wrap">
+                <div class="d-flex justify-content-between grayBack flex-wrap" id="missSet">
                     <div>
                         <p><b>Drone Id:</b>
                             #<?php echo $violation["droneId"]; ?>
@@ -150,7 +168,7 @@ if ($result) {
                             <?php if (!isset($_POST["edit"])) {
                                 echo $violation["carNumber"];
                             } else
-                                echo '<input  type="number" name="vCarNumber" value="' . $violation["carNumber"] . '">'; ?>
+                                echo '<input type="number" name="vCarNumber" value="' . $violation["carNumber"] . '">'; ?>
                         </p>
                         <p>
                             <b>Date:</b>
@@ -178,23 +196,26 @@ if ($result) {
                     <?php if (!isset($_POST["edit"])) {
                         echo '<p>' . $violation["details"] . '</p>';
                     } else {
-                        echo '<input class="w-100" name= "vDetails" type="text" value="' . $violation["details"] . '">';
+                        // echo '<input class="w-100" name= "vDetails" type="text" value="' . $violation["details"] . '">';
+                        echo '<textarea name="vDetails" rows="4" cols="50">'.$violation["details"].'</textarea>';
                     }
 
                     ?>
                 </div>
+                <input type=hidden name="vioId" value=" <?php echo $violation["violationId"] ?>">
         </div>
 
-
-        <?php
-        if (!isset($_POST["edit"]))
-            echo '<button name="edit">Edit</button>';
-        else {
-            echo '<button name= "confirm">Confirm</button>';
-            echo '<button name ="cancel">Cancel</button>';
-            echo '<button name="delete">Delete</button>';
-        }
-        ?>
+        <div class="buttonGroup d-flex justify-content-center">
+            <?php
+            if (!isset($_POST["edit"]))
+                echo '<button class="btn btn-primary btn-md" name="edit">Edit</button>';
+            else {
+                echo '<button class="btn btn-success btn-md" type="submit" name= "confirm">Confirm</button>';
+                echo '<button class="btn btn-warning btn-md" type="submit" name ="cancel">Cancel</button>';
+                echo '<button class="btn btn-danger btn-md" type="submit" name="delete" id="check">Delete</button>';
+            }
+            ?>
+        </div>
         </form>
 
     </main>

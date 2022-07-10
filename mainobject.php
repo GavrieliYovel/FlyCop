@@ -129,10 +129,10 @@
               </tr>
           </table> 
           <div class="d-flex justify-content-center">
-                <form method='POST' id="check">
+                <form method='POST'>
                   <input type=hidden name=mission value=" <?php echo $missId ?>">
                   <input type=hidden name=drone value=" <?php echo $row1["droneId"] ?>">
-                  <input type=submit value=Delete name=delete  >
+                  <input type=submit value=Delete name=delete id="check" >
                 </form>
           </div>
 
