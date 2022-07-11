@@ -1,3 +1,51 @@
+<?php
+
+  include "config.php";
+  include "urldefine.php";
+
+
+  if(isset($_POST["submit"])) {
+    $dis = $_POST["mDistance"];
+    if(!$dis) {
+      $dis = 0;
+    }
+
+    $end = date('H:i:s',strtotime('+'.$_POST["mTime"].' minutes',strtotime($_POST["mStart"])));
+    $query1 = "UPDATE tbl_activeDrones_209 SET 
+                                            missionType= '" . $_POST["mType"] . "', 
+                                            maxAltitude =" . $_POST["mAltitude"] . ", 
+                                            maxDistance= " . $dis . ",  
+                                            endTime= '" . $end . "'
+                                            WHERE missionId= ". $_POST["mId"];
+
+    mysqli_query($connection, $query1);
+    header('Location: ' . URL . 'mainobject.php?mission_id='.$_POST["mId"].'');
+  }
+
+  $query = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_users_209 using(user_id) WHERE missionId =". $_POST["mission"];
+  $result = mysqli_query($connection, $query);
+  if($result) {
+    $mission = mysqli_fetch_assoc($result);
+  }
+  else die("DB query failed.");
+
+  // $durQuery = "SELECT TIMEDIFF(endTime, startTime) AS dur FROM tbl_activeDrones_209 WHERE missionId=". $_POST["mission"];
+  // $result = mysqli_query($connection, $durQuery);
+  // if($result) {
+  //   $missionDur = mysqli_fetch_assoc($result);
+  // }
+  // else die("DB query failed.");
+
+  // echo floatval($missionDur["dur"]);
+
+  $to_time = strtotime($mission["endTime"]);
+  $from_time = strtotime("$mission[startTime]");
+  $dur = round(abs($to_time - $from_time) / 60,2);
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +59,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet">
 
 
-    <title>#235 Edit</title>
+    <title>#<?php echo $mission["droneId"]; ?> Edit</title>
   </head>
   <body>
 
@@ -58,31 +106,31 @@
     <main>
       <!-- breadcrumbs -->
       <ul class="breadcrumbs">
-        <li><i class="bi bi-caret-right"></i></i><a href="index.html">Home Screen</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="dronelist.html">Active Drones</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="mainobject.html">Drone #235</a></li>
+        <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
+        <li><i class="bi bi-caret-right"></i></i><a href="dronelist.php">Active Drones</a></li>
+        <li><i class="bi bi-caret-right"></i></i><a href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>">Drone #<?php echo $mission["droneId"]; ?></a></li>
         <li><i class="bi bi-caret-right"></i></i><a href="#">Edit</a></li>
       </ul>
       <div id="editObj">
-        <h1>Drone #235</h1>
+        <h1>Drone #<?php echo $mission["droneId"]; ?></h1>
         <table>
           <tr>
             <th>Set by:</th>
-            <td>Haim </td>
+            <td><?php echo $mission["firstName"]. " " . $mission["lastName"];  ?> </td>
             <th>Start Time:</th>
-            <td>9:30</td>
+            <td><?php echo $mission["startTime"]; ?></td>
           </tr>
         </table>
-        <form class="editForm" action="editmission.php" method="get">
+        <form class="editForm" action="#" method="POST">
           <div>
             <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
             <p class="fw-bold">Mission:</p>
             <div class="form-group d-flex align-items-center">
                 
-                <input class="form-check-input align-self-center" type="radio" name="mission" value="patrol" checked id="patrol">
+                <input class="form-check-input align-self-center" type="radio" name="mType" value="patrol" checked id="patrol">
                 <label class="form-check-label" for="inlineRadio1">Patrol</label>
                 
-                <input class="form-check-input align-self-center" type="radio" name="mission" value="standstill" id="standStill">
+                <input class="form-check-input align-self-center" type="radio" name="mType" value="standstill" id="standStill">
                 <label class="form-check-label" for="inlineRadio2">Stand still</label>
             </div>
           </div>
@@ -91,11 +139,11 @@
             <div class="d-flex">
               <label class="form-label">Duration: </label>
               <div class="badge bg-dark d-flex justify-content-center">
-                <output>125</output> <span>mins</span>
+                <output><?php echo $dur;?></output> <span>mins</span>
             </div>
             </div>    
             <div class="d-flex align-items-center">
-              <p>20 mins </p><input type="range" name="time" class="form-range"  min="20" max="300" value="125" step="5" oninput="func(0, this.value);"><p> 300 mins</p>
+              <p>20 mins </p><input type="range" value="<?php echo $dur;?>" name="mTime" class="form-range"  min="20" max="300"  step="5" oninput="func(0, this.value);"><p> 300 mins</p>
             </div>  
           </div>
 
@@ -103,11 +151,11 @@
             <div class="d-flex">
               <label  class="form-label">Avg. Altitude: </label>
               <div class="badge bg-dark d-flex justify-content-center">
-                <output>5.2</output> <span>m</span>
+                <output><?php echo $mission["maxAltitude"] ?></output> <span>m</span>
               </div>
             </div>   
             <div class="d-flex align-items-center">
-              <p>3 m </p><input type="range" name="altitude" class="form-range align-self-end"  min="3" max="10" value="5.2" step="0.2" oninput="func(1, this.value);"><p> 10 m</p>
+              <p>3 m </p><input type="range" name="mAltitude" class="form-range align-self-end"  min="3" max="10" value="<?php echo $mission["maxAltitude"] ?>" step="0.2" oninput="func(1, this.value);"><p> 10 m</p>
             </div> 
           </div>
 
@@ -115,18 +163,19 @@
             <div class="d-flex">
               <label  class="form-label">Max distance: </label>
               <div class="badge bg-dark d-flex justify-content-center">
-                <output>500</output> <span>m</span>
+                <output><?php echo $mission["maxDistance"] ?></output> <span>m</span>
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <p>25 m </p><input type="range" name="distance" class="form-range align-self-end"  min="25" max="2500" value="500" step="1" oninput="func(2, this.value);"  id="maxDistance"><p> 2500 m</p>
+              <p>25 m </p><input type="range" name="mDistance" class="form-range align-self-end"  min="25" max="2500" value="<?php echo $mission["maxDistance"] ?>" step="1" oninput="func(2, this.value);"  id="maxDistance"><p> 2500 m</p>
             </div>    
           </div> 
-        
+          <input type="hidden" name="mStart" value="<?php echo $mission["startTime"]; ?>">
+          <input type="hidden" name="mId" value="<?php echo $mission["missionId"]; ?>">
           <div class="buttonGroup d-flex justify-content-end">
             <a class="btn btn-danger btn-md" href="#" role="button"><img src="images/stopIcn.png" alt=""> End Mission</a>
-            <a class="text-white btn btn-warning btn-md" href="#" role="button"><i class="bi bi-x-circle"></i> Abort</a>
-            <button type="submit" value="Submit" class="btn btn-success btn-md"><i class="bi bi-check-lg"></i>Submit</button>
+            <a class="text-white btn btn-warning btn-md" href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>" role="button"><i class="bi bi-x-circle"></i> Abort</a>
+            <button type="submit" value="Submit" name="submit" class="btn btn-success btn-md"><i class="bi bi-check-lg"></i>Submit</button>
           </div>
       </form>
       </div>

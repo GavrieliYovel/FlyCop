@@ -40,7 +40,8 @@ body {
 }
 
 .navbar-brand {
-    background-image: url("/students/2021-2022/web1/dev_209/images/logo.png");
+    /* background-image: url("/students/2021-2022/web1/dev_209/images/logo.png"); */
+    background-image: url("/FlyCop/images/logo.png");
     width: 175px;
     height: 77px;
     background-size: cover;
@@ -124,8 +125,10 @@ ul.breadcrumbs li a:hover {
     margin-top: 20px;
 }
 
-.btn-secondary {
-    border-radius: 4px;
+.loginButton {
+    border-radius: 12px;
+    margin: 25px auto;
+    display: block;
 }
 
 /*----------------Main Object Page---------------*/
@@ -139,6 +142,11 @@ ul.breadcrumbs li a:hover {
     margin-top: 1%;
 
 }
+
+#mainObjContent h1{
+    margin-bottom: 20px;
+}
+
 
 #missionProperties {
     width: 35%;
@@ -263,7 +271,8 @@ ul.breadcrumbs li a:hover {
 }
 
 .buttonGroup {
-    margin-top: 50px;
+    margin: 25px;
+    
 }
 
 .buttonGroup a {
@@ -321,9 +330,15 @@ ul.breadcrumbs li a:hover {
     margin-bottom: 20px;
 }
 
-.quickActions {
+/* .hotlineQuick {
+    display: flex;
+} */
+
+.homeDiv {
     width: 50%;
+    justify-content: space-evenly;
 }
+
 
 .recentViolations {
     width: 75%;
@@ -431,7 +446,7 @@ h6 {
 
     /* Home Page */
 
-    .quickActions {
+    .homeDiv {
         width: 100%;
     }
 

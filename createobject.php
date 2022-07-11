@@ -12,6 +12,9 @@
   if(isset($_POST["mission"])) {
     $mis = $_POST["mission"];
     $dis = $_POST["distance"];
+    if(!$dis) {
+      $dis = 0;
+    }
     $alt = $_POST["altitude"];
     $tm = $_POST["time"];
     $dId = $_POST["drone"];

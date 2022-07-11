@@ -1,7 +1,5 @@
 window.onload = () => {
-
     resetFormBtn();
-    checkBeforeDelete();
 }
 
 

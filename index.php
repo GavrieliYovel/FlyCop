@@ -40,80 +40,91 @@
       } else
         $message = "Invalid username or password!";
     }
-  }
+  } 
+  
+    if(isset($_SESSION["role"])){ 
+      $missionQuery = "SELECT * FROM tbl_activeDrones_209 LIMIT 3";
+      $result = mysqli_query($connection, $missionQuery);
+      if (!$result) {
+        die("DB query failed.");
+      }
+    }
+  
 
   ?>
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#"></a>
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header ">
-          <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-          <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                                                  else echo 'style:"display: flex"'; ?>>
-            <li class="nav-item">
-              <a class="nav-link " href="createobject.php">New Mission</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " href="dronelist.php">Active Drones</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="violationlist.php">Violations</a>
-            </li>
-          </ul>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="index.php"></a>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+              <div class="offcanvas-header ">
+                <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+                <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                        else echo 'style:"display: flex"'; ?>>
+                  <li class="nav-item">
+                    <a class="nav-link " href="createobject.php">New Mission</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link " href="dronelist.php">Active Drones</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Violations</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+          <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                          else echo 'style:"display: flex"'; ?>>
+              <?php
+                echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+                echo '<div class="text-white">';
+                echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+                echo '<p>' . $_SESSION["rName"] . '</p>';
+              ?>
+              <div class="d-flex">
+              <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
+              <a href="#"><i class="bi bi-gear-fill"></i></a> -->
+              <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
+              </div>
+          </div>
       </div>
-      <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                        else echo 'style:"display: flex"'; ?>>
-        <?php
-        if (isset($_SESSION["user"])) {
-          echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
-          echo '<div class="text-white">';
-          echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
-          echo '<p>' . $_SESSION["rName"] . '</p>';
-        }
-        ?>
-        <div class="d-flex">
-          <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
-            <a href="#"><i class="bi bi-gear-fill"></i></a> -->
-          <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
-        </div>
-      </div>
-    </div>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </nav>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                          else echo 'style:"display: flex"'; ?>>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
 
   <main>
     <!-- breadcrumbs -->
     <ul class="breadcrumbs">
       <li><i class="bi bi-caret-right"></i></i><a href="#">Home Screen</a></li>
     </ul>
+    <div id="mainObjContent">
+      <h1>Welcome To FlyCop <?php if (isset($_SESSION["user"])) echo ', ' . $_SESSION["fName"]; ?> </h1>
+      <div class="homeDiv grayBack" <?php if (isset($_SESSION["user"])) echo 'style="display: none;"'; ?>>
+        <h1>Login</h1>
+        <form action="#" method="post" id="frm">
+          <div class="form-group">
+            <label for="loginMail">Email: </label>
+            <input type="email" class="form-control" name="loginMail" id="loginMail" aria-describedby="emailHelp" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <label for="loginPass">Password: </label>
+            <input type="password" class="form-control" name="loginPass" id="loginPass" placeholder="Enter Password">
+          </div>
+         
+          <button type="submit" class="btn btn-secondary loginButton">Log Me In</button>
+          
+          <div class="error-message"><?php if (isset($message)) {
+              echo $message;
+            } ?>
+          </div>
+        </form>
+      </div>
 
-    <div class="container width-50" <?php if (isset($_SESSION["user"])) echo 'style="display: none;"'; ?>>
-      <h1>Login</h1>
-      <form action="#" method="post" id="frm">
-        <div class="form-group">
-          <label for="loginMail">Email: </label>
-          <input type="email" class="form-control" name="loginMail" id="loginMail" aria-describedby="emailHelp" placeholder="Enter email">
-        </div>
-        <div class="form-group">
-          <label for="loginPass">Password: </label>
-          <input type="password" class="form-control" name="loginPass" id="loginPass" placeholder="Enter Password">
-        </div>
-        <button type="submit" class="btn btn-primary">Log Me In</button>
-        <div class="error-message"><?php if (isset($message)) {
-                                      echo $message;
-                                    } ?></div>
-      </form>
-    </div>
-
-
-    <div id="mainObjContent" <?php if (!isset($_SESSION["role"])) {
+      <div class="homeDiv grayBack" <?php if (!isset($_SESSION["role"])) {
                                 echo 'style = "display:none;"';
                               } else {
                                 if ($_SESSION["role"] == 1) {
@@ -121,8 +132,6 @@
                                 } else echo 'style = "display:none;"';
                               }
                               ?>>
-
-      <div class="quickActions grayBack">
         <button class="grayBtn align-self-start"><i class="bi bi-arrow-left-right"></i></button>
         <h4 class="row align-self-end justify-content-center">Quick Actions</h4>
         <div class="d-flex justify-content-evenly">
@@ -145,6 +154,29 @@
             <h6>report</h6>
           </div>
         </div>
+
+      </div>
+
+      <div class="grayBack homeDiv" <?php if (!isset($_SESSION["role"])) {
+                                echo 'style = "display:none;"';
+                              } else {
+                                if ($_SESSION["role"] == 2) {
+                                  echo 'style="display: flex;"';
+                                } else echo 'style = "display:none;"';
+                              }
+                              ?>>
+        <?php 
+          if(isset($_SESSION["role"]) && $_SESSION["role"] == 2){
+            while($row = mysqli_fetch_assoc($result))
+            {
+              echo '<div class="d-flex flex-column justify-content-center align-items-center ">';
+              echo   '<img class="quickIcn" src="images/drone.png" alt="">';
+              echo   '<h4>Mission#' .$row["missionId"] .'</h4>';
+              echo   '<p>Drone#'. $row["droneId"].'</p>';
+              echo '</div>';
+            }
+          }
+        ?>
 
       </div>
 

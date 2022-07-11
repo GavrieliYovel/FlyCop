@@ -129,11 +129,17 @@
               </tr>
           </table> 
           <div class="d-flex justify-content-center">
-                <form method='POST'>
-                  <input type=hidden name=mission value=" <?php echo $missId ?>">
-                  <input type=hidden name=drone value=" <?php echo $row1["droneId"] ?>">
-                  <input type=submit value=Delete name=delete id="check" >
-                </form>
+            <div class="buttonGroup d-flex justify-content-end">
+                  <form action="#" method="POST">
+                    <input type=hidden name=mission value=" <?php echo $missId ?>">
+                    <input type=hidden name=drone value=" <?php echo $row1["droneId"] ?>">
+                    <input class="btn btn-danger btn-md" type=submit value=Delete name=delete id="check" >
+                  </form>
+                  <form action="editobject.php" method="POST">
+                    <input type=hidden name=mission value=" <?php echo $missId ?>">
+                    <input class="btn btn-success btn-md" type=submit value="Edit">
+                  </form>
+            </div>
           </div>
 
           </section>
