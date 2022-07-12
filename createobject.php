@@ -8,6 +8,7 @@ if (!isset($_SESSION["role"])) {
   header('Location:' . URL);
 }
 
+
 if (isset($_POST["mission"])) {
   $mis = $_POST["mission"];
   $dis = $_POST["distance"];
@@ -102,10 +103,11 @@ if (isset($_POST["mission"])) {
 
     <div class="wrapper">
       <h1>Create Mission</h1>
-      <p class="fw-bold">Mission Shortcuts:</p>
-      <div id="missSC" class="d-flex justify-content-evenly">
+      <div class="grayBack">
+        <p class="fw-bold">Mission Shortcuts:</p>
+        <div id="missSC" class="d-flex justify-content-evenly"></div>
       </div>
-      <form action="#" method="post">
+      <form action="#" method="post" class="grayBack">
         <div>
           <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
 
@@ -186,6 +188,7 @@ if (isset($_POST["mission"])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="scripts/editscript.js"></script>
+    <script src="scripts/quickactions.js"></script>
 
 
 </body>

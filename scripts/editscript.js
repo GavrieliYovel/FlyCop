@@ -39,10 +39,11 @@ $(document).ready(function () {
 function showMissionSC(missionSC) {
 
     let scDiv = document.getElementById("missSC");
-
+    let idx = 1;
     for (const sc of missionSC.shortcuts) {
         let btn = document.createElement('button');
         btn.className = "btn btn-secondary";
+        btn.id = "btn" + idx;
         btn.innerHTML = sc["missionName"];
         let mission = document.querySelectorAll('input[type=radio]')
         btn.onclick = () => {
@@ -62,6 +63,7 @@ function showMissionSC(missionSC) {
 
         }
         scDiv.appendChild(btn);
+        idx++;
     }
 
 

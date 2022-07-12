@@ -94,11 +94,11 @@ if (!$result) {
       <!-- Violations Detected -->
       <section id="vioDet">
         <h2>Violations Detected: </h2>
-        <form action="#" method="post">
+        <form action="#" method="post" class="d-flex align-items-center">
           <label>Sort by:</label>
-          <input type="submit" name="sort" value="date">
-          <input type="submit" name="sort" value="severity">
-          <input type="submit" name="sort" value="type">
+          <input type="submit" name="sort" value="date" class="btn btn-sm btn-secondary">
+          <input type="submit" name="sort" value="severity" class="btn btn-sm btn-secondary">
+          <input type="submit" name="sort" value="type" class="btn btn-sm btn-secondary">
         </form>
         <ul class="violationList" id="list">
           <?php
