@@ -1,8 +1,16 @@
 <?php
 include "urldefine.php";
+include "config.php";
 session_start();
 if (!isset($_SESSION["role"])) {
   header('Location: ' . URL);
+}
+
+$queryDrones  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_users_209 using(user_id)";
+$result = mysqli_query($connection, $queryDrones);
+
+if (!$result) {
+  die("DB query failed.");
 }
 
 ?>
@@ -23,6 +31,7 @@ if (!isset($_SESSION["role"])) {
 </head>
 
 <body>
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.php"></a>
@@ -35,17 +44,22 @@ if (!isset($_SESSION["role"])) {
           <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                                                   else echo 'style:"display: flex"'; ?>>
             <li class="nav-item">
-              <a class="nav-link " href="createobject.php">New Mission</a>
+              <?php if ($_SESSION["role"] == 1)
+                echo '<a class="nav-link" href="createobject.php">New Mission</a>';
+              elseif ($_SESSION["role"] == 2)
+                echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; ?>
+
             </li>
             <li class="nav-item">
               <a class="nav-link " href="dronelist.php">Active Drones</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Violations</a>
+              <a class="nav-link" href="violationlist.php">Violations</a>
             </li>
           </ul>
         </div>
       </div>
+      <!-- User Details in Navbar -->
       <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                         else echo 'style:"display: flex"'; ?>>
         <?php
@@ -54,40 +68,38 @@ if (!isset($_SESSION["role"])) {
         echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
         echo '<p>' . $_SESSION["rName"] . '</p>';
         ?>
-        <div class="d-flex">
-          <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
-                <a href="#"><i class="bi bi-gear-fill"></i></a> -->
-          <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
+        <div>
+          <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
         </div>
       </div>
     </div>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+    <!-- End of user details -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                                                                                                              else echo 'style:"display: flex"'; ?>>
       <span class="navbar-toggler-icon"></span>
     </button>
   </nav>
+  <!-- End of navbar -->
 
+  <!-- Breadcrumbs -->
   <ul class="breadcrumbs">
     <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
     <li><i class="bi bi-caret-right"></i></i><a href="#">Active Drones</a></li>
   </ul>
+  <!-- End of breadcrumbs -->
+
+  <!-- Active drones list -->
   <div id="listWrapper">
     <div class="d-flex justify-content-between">
       <h1>Active Drones</h1>
       <?php
-      if ($_SESSION["role"] == 1) {
+      if ($_SESSION["role"] == 1) { //Only police officer can add drone mission
         echo '<a href="createobject.php"><i class="fs-2 bi bi-plus-square"></i></a>';
       }
       ?>
     </div>
     <?php
-    include "config.php";
-    // get all data from DB
-    $query  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_users_209 using(user_id)";
-    $result = mysqli_query($connection, $query);
 
-    if (!$result) {
-      die("DB query failed.");
-    }
     while ($row = mysqli_fetch_assoc($result)) {
       echo '<div class="droneObject">';
       if ($_SESSION["role"] == 1) {
@@ -116,6 +128,7 @@ if (!isset($_SESSION["role"])) {
 
     ?>
   </div>
+  <!-- End of active drones list -->
   <?php
   mysqli_free_result($result);
   ?>

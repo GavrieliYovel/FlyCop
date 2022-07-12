@@ -1,3 +1,48 @@
+<?php
+include "config.php";
+include "urldefine.php";
+session_start();
+if (!isset($_SESSION["user"])) {
+  if (!empty($_POST["loginMail"])) {
+
+    $queryUser  = "SELECT * FROM tbl_users_209 INNER JOIN tbl_roles_209 USING (roleId) where email ='" . $_POST["loginMail"] . "' and password = '" . $_POST["loginPass"] . "'";
+
+    $result = mysqli_query($connection, $queryUser);
+
+    if (!$result) {
+      die("DB query failed.");
+    }
+
+    $row = mysqli_fetch_assoc($result);
+    if (is_array($row)) {
+      $_SESSION["user"] = $row["user_id"];
+      $_SESSION["role"] = $row["roleId"];
+      $_SESSION["img"] = $row["img"];
+      $_SESSION["lName"] = $row["lastName"];
+      $_SESSION["fName"] = $row["firstName"];
+      $_SESSION["rName"] = $row["roleName"];
+    } else
+      $message = "Invalid username or password!";
+  }
+}
+
+if (isset($_SESSION["role"])) {
+  $missionQuery = "SELECT * FROM tbl_activeDrones_209 LIMIT 3";
+  $result = mysqli_query($connection, $missionQuery);
+  if (!$result) {
+    die("DB query failed.");
+  }
+
+  $queryViolations  = "SELECT * FROM tbl_violation_209 ORDER BY violationId DESC LIMIT 5";
+  $Violations = mysqli_query($connection, $queryViolations);
+  if (!$Violations) {
+    die("DB query failed.");
+  }
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,44 +59,7 @@
 </head>
 
 <body>
-  <?php
-  include "config.php";
-  include "urldefine.php";
-  session_start();
-  if (!isset($_SESSION["user"])) {
-    if (!empty($_POST["loginMail"])) {
-
-      $query  = "SELECT * FROM tbl_users_209 INNER JOIN tbl_roles_209 USING (roleId) where email ='" . $_POST["loginMail"] . "' and password = '" . $_POST["loginPass"] . "'";
-
-      $result = mysqli_query($connection, $query);
-
-      if (!$result) {
-        die("DB query failed.");
-      }
-
-      $row = mysqli_fetch_assoc($result);
-      if (is_array($row)) {
-        $_SESSION["user"] = $row["user_id"];
-        $_SESSION["role"] = $row["roleId"];
-        $_SESSION["img"] = $row["img"];
-        $_SESSION["lName"] = $row["lastName"];
-        $_SESSION["fName"] = $row["firstName"];
-        $_SESSION["rName"] = $row["roleName"];
-      } else
-        $message = "Invalid username or password!";
-    }
-  }
-
-  if (isset($_SESSION["role"])) {
-    $missionQuery = "SELECT * FROM tbl_activeDrones_209 LIMIT 3";
-    $result = mysqli_query($connection, $missionQuery);
-    if (!$result) {
-      die("DB query failed.");
-    }
-  }
-
-
-  ?>
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.php"></a>
@@ -79,6 +87,7 @@
           </ul>
         </div>
       </div>
+      <!-- User Details in Navbar -->
       <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                         else echo 'style:"display: flex"'; ?>>
         <?php
@@ -87,27 +96,30 @@
         echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
         echo '<p>' . $_SESSION["rName"] . '</p>';
         ?>
-        <div class="d-flex">
-          <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
-              <a href="#"><i class="bi bi-gear-fill"></i></a> -->
-          <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
+        <div>
+          <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
         </div>
       </div>
     </div>
+    <!-- End of user details -->
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                                                                                                                                               else echo 'style:"display: flex"'; ?>>
       <span class="navbar-toggler-icon"></span>
     </button>
   </nav>
+  <!-- End of navbar -->
 
   <main>
-    <!-- breadcrumbs -->
+    <!-- Breadcrumbs -->
     <ul class="breadcrumbs">
       <li><i class="bi bi-caret-right"></i></i><a href="#">Home Screen</a></li>
     </ul>
+    <!-- End of Breadcrumbs -->
     <div id="mainObjContent">
       <h1>Welcome To FlyCop <?php if (isset($_SESSION["user"])) echo ', ' . $_SESSION["fName"]; ?> </h1>
       <div class="homeDiv grayBack" <?php if (isset($_SESSION["user"])) echo 'style="display: none;"'; ?>>
+
+        <!-- Login Form -->
         <h1>Login</h1>
         <form action="#" method="post" id="frm">
           <div class="form-group">
@@ -127,7 +139,9 @@
           </div>
         </form>
       </div>
+      <!-- End of login form -->
 
+      <!-- Quick Actions // visible only for roleId = 1 -->
       <div class="homeDiv grayBack" <?php if (!isset($_SESSION["role"])) {
                                       echo 'style = "display:none;"';
                                     } else {
@@ -161,72 +175,86 @@
           </a>
         </div>
 
-
       </div>
+      <!-- End of quick actions -->
 
+      <!-- Active Missions // Visible only for user with rolId = 2 -->
       <div class="grayBack homeDiv" <?php if (!isset($_SESSION["role"])) {
                                       echo 'style = "display:none;"';
                                     } else {
                                       if ($_SESSION["role"] == 2) {
-                                        echo 'style="display: flex;"';
+                                        echo 'style="display: block;"';
                                       } else echo 'style = "display:none;"';
                                     }
                                     ?>>
-        <?php
-        if (isset($_SESSION["role"]) && $_SESSION["role"] == 2) {
-          while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="d-flex flex-column justify-content-center align-items-center ">';
-            echo   '<img class="quickIcn" src="images/drone.png" alt="">';
-            echo   '<h4>Mission#' . $row["missionId"] . '</h4>';
-            echo   '<p>Drone#' . $row["droneId"] . '</p>';
-            echo '</div>';
+        <h4 class="row align-self-end justify-content-center">Active Missions</h4>
+        <div class="d-flex justify-content-evenly">
+          <?php
+          if (isset($_SESSION["role"]) && $_SESSION["role"] == 2) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '<div class="d-flex flex-column justify-content-center align-items-center ">';
+              echo   '<img class="quickIcn" src="images/drone.png" alt="">';
+              echo   '<h4>Mission#' . $row["missionId"] . '</h4>';
+              echo   '<p>Drone#' . $row["droneId"] . '</p>';
+              echo '</div>';
+            }
           }
-        }
-        ?>
-
+          ?>
+        </div>
+        <div class="d-flex justify-content-center">
+          <a href="dronelist.php" class="btn btn-sm btn-secondary d-flex align-items-baseline">Show more</a>
+        </div>
       </div>
 
+      <!-- End of active missions -->
 
+      <!-- Recent Violations // only roleId = 2 can access link to violation -->
       <div class="grayBack recentViolations" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                                               else echo 'style:"display: block"'; ?>>
         <h4 class="row align-self-end justify-content-center">Recent Violations</h4>
 
         <div class="violations">
-          <table class="w-100 ">
 
+          <ul class="violationList" id="list">
             <?php
-            $queryViolations  = "SELECT * FROM tbl_violation_209 ORDER BY violationId DESC LIMIT 5";
-            $Violations = mysqli_query($connection, $queryViolations);
-            if (!$Violations) {
-              die("DB query failed.");
-            }
 
             while ($violation = mysqli_fetch_assoc($Violations)) {
-              echo '<tr class="border-bottom border-dark align-items-end d-flex justify-content-between">';
-              echo ' <td class="startLine">';
+              echo '<li class="border-bottom border-dark ">';
+              if ($_SESSION["role"] == 2) { // Only Hotline receptionist can see
+                echo '<a href="violationpage.php?vId=' . $violation["violationId"] . '" class="d-flex justify-content-between align-items-end">';
+              } else
+                echo '<div class="d-flex justify-content-between align-items-end">';
               switch ($violation["severity"]) {
                 case 1:
-                  echo '<img  src="images/signGr.png" class ="signIcn">' . $violation["type"] . '</td>';
+                  echo '<p><img  src="images/signGr.png" class ="signIcn"></p>';
                   break;
                 case 2:
-                  echo '<img  src="images/signYel.png" class ="signIcn">' . $violation["type"] . '</td>';
+                  echo '<p><img  src="images/signYel.png" class ="signIcn"></p>';
                   break;
                 case 3:
-                  echo '<img  src="images/signRed.png" class ="signIcn">' . $violation["type"] . '</td>';
+                  echo '<p><img  src="images/signRed.png" class ="signIcn"></p>';
                   break;
               }
-
-              echo '<td>' . $violation["timeV"] . '</td>';
-              echo '<td>' . $violation["dateV"] . '</td>';
-              echo '</tr> ';
+              echo '<p class="startLine">' . $violation["type"] . '</p>';
+              echo '<p>' . $violation["timeV"] . '</p>';
+              echo '<p>' . $violation["dateV"] . '</p>';
+              if ($_SESSION["role"] == 2)
+                echo '</a>';
+              else
+                echo '</div>';
+              echo '</li>';
             }
             ?>
-          </table>
-        </div>
+          </ul>
 
+        </div>
+        <div class="d-flex justify-content-center">
+          <a href="violationlist.php" class="btn btn-sm btn-secondary d-flex align-items-baseline">Show more</a>
+        </div>
       </div>
 
     </div>
+    <!-- End of recent violations -->
   </main>
   <?php
   if (isset($result))
