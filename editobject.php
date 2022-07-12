@@ -63,132 +63,142 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"></a>
-            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header ">
-                    <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-                    <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">New Mission</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="dronelist.html">Active Drones</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Violations</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="person">
-                <img id="personImg" src="images/haim.png" alt="">
-                <div class="text-white">
-                    <h5>Haim</h5>
-                    <p>traffic police officer</p>  
-                    <div class="d-flex">
-                        <a href="#"><i class="bi bi-person-circle"></i></a>
-                        <a href="#"><i class="bi bi-gear-fill"></i></a>
-                        <a href="#"><i class="bi bi-door-closed-fill"></i></a>
-                    </div>
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.php"></a>
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header ">
+            <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
-      </nav>
-    <main>
-      <!-- breadcrumbs -->
-      <ul class="breadcrumbs">
-        <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="dronelist.php">Active Drones</a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>">Drone #<?php echo $mission["droneId"]; ?></a></li>
-        <li><i class="bi bi-caret-right"></i></i><a href="#">Edit</a></li>
-      </ul>
-      <div id="editObj">
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-grow-1 pe-3" <?php   if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                          else echo 'style:"display: flex"'; ?>>
+              <li class="nav-item">
+                <?php   if ($_SESSION["role"] == 1)
+                            echo '<a class="nav-link" href="createobject.php">New Mission</a>';
+                        elseif ($_SESSION["role"] == 2)
+                            echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; 
+                ?>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="dronelist.php">Active Drones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="violationlist.php">Violations</a>
+              </li>
+            </ul>
+        </div>
+      </div>
+      <!-- User Details in Navbar -->
+      <div id="person" <?php  if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                              else echo 'style:"display: flex"'; ?>>
+          <?php
+            echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+            echo '<div class="text-white">';
+            echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+            echo '<p>' . $_SESSION["rName"] . '</p>';
+          ?>
+          <div>
+            <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
+          </div>
+      </div>
+    </div>
+    <!-- End of user details -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+        <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+              else echo 'style:"display: flex"'; ?>>
+        <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+  <!-- End of navbar -->
+  <main>
+    <!-- breadcrumbs -->
+    <ul class="breadcrumbs">
+      <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
+      <li><i class="bi bi-caret-right"></i></i><a href="dronelist.php">Active Drones</a></li>
+      <li><i class="bi bi-caret-right"></i></i><a href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>">Drone #<?php echo $mission["droneId"]; ?></a></li>
+      <li><i class="bi bi-caret-right"></i></i><a href="#">Edit</a></li>
+    </ul>
+    <div id="editObj">
+      <div class="grayBack">
         <h1>Drone #<?php echo $mission["droneId"]; ?></h1>
         <table>
           <tr>
             <th>Set by:</th>
-            <td><?php echo $mission["firstName"]. " " . $mission["lastName"];  ?> </td>
+            <td><?php echo $mission["firstName"]. " " . $mission["lastName"] . "&nbsp;";  ?> </td>
             <th>Start Time:</th>
             <td><?php echo $mission["startTime"]; ?></td>
           </tr>
         </table>
-        <form class="editForm" action="#" method="POST">
-          <div>
-            <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
-            <p class="fw-bold">Mission:</p>
-            <div class="form-group d-flex align-items-center">
-                
-                <input class="form-check-input align-self-center" type="radio" name="mType" value="patrol" checked id="patrol">
-                <label class="form-check-label" for="inlineRadio1">Patrol</label>
-                
-                <input class="form-check-input align-self-center" type="radio" name="mType" value="standstill" id="standStill">
-                <label class="form-check-label" for="inlineRadio2">Stand still</label>
-            </div>
-          </div>
-        
-          <div class="form-group">
-            <div class="d-flex">
-              <label class="form-label">Duration: </label>
-              <div class="badge bg-dark d-flex justify-content-center">
-                <output><?php echo $dur;?></output> <span>mins</span>
-            </div>
-            </div>    
-            <div class="d-flex align-items-center">
-              <p>20 mins </p><input type="range" value="<?php echo $dur;?>" name="mTime" class="form-range"  min="20" max="300"  step="5" oninput="func(0, this.value);"><p> 300 mins</p>
-            </div>  
-          </div>
-
-          <div class="form-group">
-            <div class="d-flex">
-              <label  class="form-label">Avg. Altitude: </label>
-              <div class="badge bg-dark d-flex justify-content-center">
-                <output><?php echo $mission["maxAltitude"] ?></output> <span>m</span>
-              </div>
-            </div>   
-            <div class="d-flex align-items-center">
-              <p>3 m </p><input type="range" name="mAltitude" class="form-range align-self-end"  min="3" max="10" value="<?php echo $mission["maxAltitude"] ?>" step="0.2" oninput="func(1, this.value);"><p> 10 m</p>
-            </div> 
-          </div>
-
-          <div class="form-group">
-            <div class="d-flex">
-              <label  class="form-label">Max distance: </label>
-              <div class="badge bg-dark d-flex justify-content-center">
-                <output><?php echo $mission["maxDistance"] ?></output> <span>m</span>
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <p>25 m </p><input type="range" name="mDistance" class="form-range align-self-end"  min="25" max="2500" value="<?php echo $mission["maxDistance"] ?>" step="1" oninput="func(2, this.value);"  id="maxDistance"><p> 2500 m</p>
-            </div>    
-          </div> 
-          <input type="hidden" name="mStart" value="<?php echo $mission["startTime"]; ?>">
-          <input type="hidden" name="mId" value="<?php echo $mission["missionId"]; ?>">
-          <div class="buttonGroup d-flex justify-content-end">
-            <a class="btn btn-danger btn-md" href="#" role="button"><img src="images/stopIcn.png" alt=""> End Mission</a>
-            <a class="text-white btn btn-warning btn-md" href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>" role="button"><i class="bi bi-x-circle"></i> Abort</a>
-            <button type="submit" value="Submit" name="submit" class="btn btn-success btn-md"><i class="bi bi-check-lg"></i>Submit</button>
-          </div>
-      </form>
       </div>
-    </main>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
+      <form class="editForm grayBack" action="#" method="POST">
+        <div>
+          <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>
+          <p class="fw-bold">Mission:</p>
+          <div class="form-group d-flex align-items-center">
+              
+              <input class="form-check-input align-self-center" type="radio" name="mType" value="patrol" checked id="patrol">
+              <label class="form-check-label" for="inlineRadio1">Patrol</label>
+              
+              <input class="form-check-input align-self-center" type="radio" name="mType" value="standstill" id="standStill">
+              <label class="form-check-label" for="inlineRadio2">Stand still</label>
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <div class="d-flex">
+            <label class="form-label">Duration: </label>
+            <div class="badge bg-dark d-flex justify-content-center">
+              <output><?php echo $dur;?></output> <span>mins</span>
+          </div>
+          </div>    
+          <div class="d-flex align-items-center">
+            <p>20 mins </p><input type="range" value="<?php echo $dur;?>" name="mTime" class="form-range"  min="20" max="300"  step="5" oninput="func(0, this.value);"><p> 300 mins</p>
+          </div>  
+        </div>
+        <div class="form-group">
+          <div class="d-flex">
+            <label  class="form-label">Avg. Altitude: </label>
+            <div class="badge bg-dark d-flex justify-content-center">
+              <output><?php echo $mission["maxAltitude"] ?></output> <span>m</span>
+            </div>
+          </div>   
+          <div class="d-flex align-items-center">
+            <p>3 m </p><input type="range" name="mAltitude" class="form-range align-self-end"  min="3" max="10" value="<?php echo $mission["maxAltitude"] ?>" step="0.2" oninput="func(1, this.value);"><p> 10 m</p>
+          </div> 
+        </div>
+        <div class="form-group">
+          <div class="d-flex">
+            <label  class="form-label">Max distance: </label>
+            <div class="badge bg-dark d-flex justify-content-center">
+              <output><?php echo $mission["maxDistance"] ?></output> <span>m</span>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <p>25 m </p><input type="range" name="mDistance" class="form-range align-self-end"  min="25" max="2500" value="<?php echo $mission["maxDistance"] ?>" step="1" oninput="func(2, this.value);"  id="maxDistance"><p> 2500 m</p>
+          </div>    
+        </div> 
+        <input type="hidden" name="mStart" value="<?php echo $mission["startTime"]; ?>">
+        <input type="hidden" name="mId" value="<?php echo $mission["missionId"]; ?>">
+        <div class="buttonGroup d-flex justify-content-center">
+          <a class="text-white btn btn-warning btn-md" href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>" role="button">Abort</a>
+          <button type="submit" value="Submit" name="submit" class="btn btn-success btn-md"><i class="bi bi-check-lg"></i>Submit</button>
+        </div>
+    </form>
+    </div>
+  </main>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"
+  ></script>
     
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="scripts/editscript.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="scripts/editscript.js"></script>
   </body>
 </html>

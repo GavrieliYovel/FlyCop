@@ -25,7 +25,7 @@ a:hover {
     clip-path: circle();
     height: 50%;
     width: 90px;
-    height: 70px;
+    height: 77px;
 }
 
 #person {
@@ -101,7 +101,7 @@ a:hover {
 }
 
 .btn {
-    border-radius: 40px;
+    border-radius: 20px;
     white-space: nowrap;
 }
 
@@ -139,6 +139,10 @@ ul.breadcrumbs li a:hover {
     border-radius: 12px;
     margin: 25px auto;
     display: block;
+}
+
+.form-select {
+    margin-bottom: 10px;
 }
 
 /*----------------Main Object Page---------------*/
@@ -218,7 +222,7 @@ ul.breadcrumbs li a:hover {
 /*----------------Edit Object Page---------------*/
 
 #editObj {
-    width: 65%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     margin: 50px;
@@ -285,13 +289,18 @@ ul.breadcrumbs li a:hover {
 
 }
 
+.buttonGroup button{
+    margin-right: 25px;
+}
+
 .buttonGroup a {
     margin-right: 25px;
 }
 
-.buttonGroup button {
+.buttonGroup input {
     margin-right: 25px;
 }
+
 
 /*----------------Drone List Page-----------------------*/
 
@@ -379,7 +388,9 @@ h6 {
 }
 
 #missSC {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 /*----------------Violation List-----------------------*/
@@ -467,6 +478,14 @@ h6 {
         width: 100%;
     }
 
+    .btn-res {
+       font-size: 14px;
+    }
+    
+    #editObj {
+        width: 90%;
+        margin: 50px auto;
+    }
 
 }
 
@@ -503,5 +522,8 @@ h6 {
         width: 25px;
         height: 25px;
     }
+    .btn-res {
+        font-size: 11px;
+     }
 
 }

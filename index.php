@@ -65,46 +65,48 @@ if (isset($_SESSION["role"])) {
       <a class="navbar-brand" href="index.php"></a>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header ">
-          <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-          <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                                                  else echo 'style:"display: flex"'; ?>>
-            <li class="nav-item">
-              <?php if ($_SESSION["role"] == 1)
-                echo '<a class="nav-link" href="createobject.php">New Mission</a>';
-              elseif ($_SESSION["role"] == 2)
-                echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; ?>
-
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " href="dronelist.php">Active Drones</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="violationlist.php">Violations</a>
-            </li>
-          </ul>
+            <ul class="navbar-nav flex-grow-1 pe-3" <?php   if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                          else echo 'style:"display: flex"'; ?>>
+              <li class="nav-item">
+                <?php   if ($_SESSION["role"] == 1)
+                            echo '<a class="nav-link" href="createobject.php">New Mission</a>';
+                        elseif ($_SESSION["role"] == 2)
+                            echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; 
+                ?>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="dronelist.php">Active Drones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="violationlist.php">Violations</a>
+              </li>
+            </ul>
         </div>
       </div>
       <!-- User Details in Navbar -->
-      <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                        else echo 'style:"display: flex"'; ?>>
-        <?php
-        echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
-        echo '<div class="text-white">';
-        echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
-        echo '<p>' . $_SESSION["rName"] . '</p>';
-        ?>
-        <div>
-          <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
-        </div>
+      <div id="person" <?php  if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                              else echo 'style:"display: flex"'; ?>>
+          <?php
+            echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+            echo '<div class="text-white">';
+            echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+            echo '<p>' . $_SESSION["rName"] . '</p>';
+          ?>
+          <div>
+            <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
+          </div>
       </div>
     </div>
     <!-- End of user details -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                                                                                                                                              else echo 'style:"display: flex"'; ?>>
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+        <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+              else echo 'style:"display: flex"'; ?>>
+        <span class="navbar-toggler-icon"></span>
     </button>
   </nav>
   <!-- End of navbar -->

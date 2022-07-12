@@ -21,14 +21,6 @@ if(isset($_POST["confirm"])) {
     mysqli_query($connection, $query1);
 }
 
-//   if(isset($_POST['delete'])) {
-//     $query3  = "DELETE FROM tbl_activeDrones_209 where missionId= " . $_POST["mission"] ;
-//     mysqli_query($connection, $query3);
-//     $query4 = "UPDATE tbl_drones_209 SET isAssign = 0 WHERE droneId =" . $_POST["drone"];
-//     mysqli_query($connection, $query4);
-//     header('Location: '. URL .'dronelist.php');
-//   }
-
 
 $vioId = $_GET["vId"];
 $query  = "SELECT * FROM tbl_violation_209  WHERE violationId=" . $vioId;
@@ -47,7 +39,8 @@ if ($result) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
     <title>Violation #<?php echo $violation["violationId"] ?></title>
@@ -55,70 +48,83 @@ if ($result) {
 
 <body>
 
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php"></a>
-            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header ">
                     <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-                    <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <button type="button" class="btn-close text-reset bg-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 pe-3" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                                                            else echo 'style:"display: flex"'; ?>>
+                    <ul class="navbar-nav flex-grow-1 pe-3" <?php   if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                                                    else echo 'style:"display: flex"'; ?>>
                         <li class="nav-item">
-                            <a class="nav-link " href="createobject.php">New Mission</a>
+                            <?php   if ($_SESSION["role"] == 1)
+                                        echo '<a class="nav-link" href="createobject.php">New Mission</a>';
+                                    elseif ($_SESSION["role"] == 2)
+                                        echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; 
+                            ?>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " href="dronelist.php">Active Drones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Violations</a>
+                            <a class="nav-link" href="violationlist.php">Violations</a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
-                                else echo 'style:"display: flex"'; ?>>
+            <!-- User Details in Navbar -->
+            <div id="person" <?php  if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                                    else echo 'style:"display: flex"'; ?>>
                 <?php
-                echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
-                echo '<div class="text-white">';
-                echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
-                echo '<p>' . $_SESSION["rName"] . '</p>';
+                    echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+                    echo '<div class="text-white">';
+                    echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+                    echo '<p>' . $_SESSION["rName"] . '</p>';
                 ?>
-                <div class="d-flex">
-                    <!-- <a href="#"><i class="bi bi-person-circle"></i></a>
-                    <a href="#"><i class="bi bi-gear-fill"></i></a> -->
-                    <a href="logout.php"><i class="bi bi-door-closed-fill"></i></a>
+                <div>
+                    <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
                 </div>
             </div>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <!-- End of user details -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar" <?php   if (!isset($_SESSION["user"])) echo 'style="display: none;"';
+                    else echo 'style:"display: flex"'; ?>>
             <span class="navbar-toggler-icon"></span>
         </button>
     </nav>
+    <!-- End of navbar -->
 
     <main>
-        <!-- breadcrumbs -->
+        <!-- Breadcrumbs -->
         <ul class="breadcrumbs">
             <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-            <li><i class="bi bi-caret-right"></i></i><a href="violationlist.php">Active Drones</a></li>
+            <li><i class="bi bi-caret-right"></i></i><a href="violationlist.php">Violation List</a></li>
             <li><i class="bi bi-caret-right"></i></i><a href="#">Violation #<?php echo $vioId ?></a></li>
         </ul>
+        <!-- End of breadcrumbs -->
 
+        <!-- Show Violation Details / Edit Violation Details -->
         <div id="mainObjContent">
             <h1>Violation #<?php echo $vioId ?></h1>
             <form action="#" method="POST">
-                <div class="d-flex justify-content-between grayBack flex-wrap" id="missSet">
+                <div class="d-flex justify-content-evenly grayBack d-wrap" id="missSet">
                     <div>
                         <p><b>Drone Id:</b>
                             #<?php echo $violation["droneId"]; ?>
+
                         </p>
                         <p><b>Time:</b>
                             <?php if (!isset($_POST["edit"]))
                                 echo ' ' .  $violation["timeV"];
                             else {
-                                echo '<input type="time" name="vTime"';
+                                echo '<input class="form-control" type="time" name="vTime"';
                                 echo 'value="' . $violation["timeV"] . '">';
                             }
                             ?>
@@ -140,7 +146,7 @@ if ($result) {
                                         break;
                                 }
                             } else {
-                                echo '<select name="vSeverity">';
+                                echo '<select class="form-select" name="vSeverity">';
                                 echo '<option value="1"';
                                 if ($violation["severity"] == 1) {
                                     echo 'selected';
@@ -168,14 +174,14 @@ if ($result) {
                             <?php if (!isset($_POST["edit"])) {
                                 echo $violation["carNumber"];
                             } else
-                                echo '<input type="number" name="vCarNumber" value="' . $violation["carNumber"] . '">'; ?>
+                                echo '<input class="form-control" type="number" name="vCarNumber" value="' . $violation["carNumber"] . '">'; ?>
                         </p>
                         <p>
                             <b>Date:</b>
                             <?php if (!isset($_POST["edit"])) {
                                 echo ' ' . $violation["dateV"];
                             } else {
-                                echo '<input type="date" name="vDate" value="' . $violation["dateV"] . '">';
+                                echo '<input class="form-control" type="date" name="vDate" value="' . $violation["dateV"] . '">';
                             } ?>
                         </p>
                         <p><b> Violation Type: </b>
@@ -183,11 +189,11 @@ if ($result) {
                             if (!isset($_POST["edit"])) {
                                 echo  ' ' . $violation["type"];
                             } else {
-                                echo '<input type="text" name="vType" value="' . $violation["type"] . '">';
+                                echo '<input class="form-control" type="text" name="vType" value="' . $violation["type"] . '">';
                             } ?></p>
 
                     </div>
-                    <div class="w-25"></div>
+
                 </div>
 
 
@@ -197,7 +203,7 @@ if ($result) {
                         echo '<p>' . $violation["details"] . '</p>';
                     } else {
                         // echo '<input class="w-100" name= "vDetails" type="text" value="' . $violation["details"] . '">';
-                        echo '<textarea name="vDetails" rows="4" cols="50">'.$violation["details"].'</textarea>';
+                        echo '<textarea name="vDetails" class="w-75 form-control">'.$violation["details"].'</textarea>';
                     }
 
                     ?>
@@ -217,13 +223,15 @@ if ($result) {
             ?>
         </div>
         </form>
-
+        <!-- End of Show/Edit Violation -->
     </main>
     <?php
     mysqli_free_result($result);
 
     ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
     <script src="scripts/mainobjscript.js"></script>
 </body>
 
