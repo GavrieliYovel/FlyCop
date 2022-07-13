@@ -22,10 +22,10 @@ if (isset($_POST["submit"])) {
   $violationInsert  = "INSERT INTO tbl_violation_209(missionId, droneId, type, details, severity, carNumber, timeV, dateV) 
                 VALUES(" . $_POST["vMission"] . "," . $dId["droneId"] . ",'" . $_POST["vType"] . "','" . $_POST["vDetails"] . "'," . $_POST["vSeverity"] . ", " . $_POST["vCarNumber"] . ", '" . $start . "', '" . $date . "')";
   mysqli_query($connection, $violationInsert);
-  $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced + 1";
+  $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced + 1 WHERE missionId=" . $_POST["vMission"];
   mysqli_query($connection, $vioNumberUpdate);
   mysqli_free_result($result);
-  header('Location: ' . URL . 'violationlist.php');
+  header('Location: ' . URL . 'violationpage.php?vId'.$dId["droneId"]);
 }
 
 $missionQuery  = "SELECT * FROM tbl_activeDrones_209";

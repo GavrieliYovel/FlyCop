@@ -10,7 +10,7 @@ if (!isset($_SESSION["role"])) {
 if(isset($_POST['delete'])) {
     $violationDelete  = "DELETE FROM tbl_violation_209 WHERE violationId= " . $_POST["vioId"] ;
     mysqli_query($connection, $violationDelete);
-    $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced - 1";
+    $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced - 1 WHERE missionId=". $_POST["misId"];
     mysqli_query($connection, $vioNumberUpdate);
     header('Location: '. URL .'violationlist.php');
 }
@@ -214,6 +214,7 @@ if ($sViolation) {
                     ?>
                 </div>
                 <input type=hidden name="vioId" value=" <?php echo $violation["violationId"] ?>">
+                <input type=hidden name="misId" value=" <?php echo $violation["missionId"] ?>">
         </div>
 
         <div class="buttonGroup justify-content-center" <?php   if ($_SESSION["role"] == 2) {

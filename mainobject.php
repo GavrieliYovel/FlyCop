@@ -183,29 +183,6 @@
                     }
                     ?>
               </ul>
-              <table class="d-flex flex-column">
-                  <?php
-                    // while($violation = mysqli_fetch_assoc($missionVio))
-                    // {
-                    //   echo '<tr class="border-bottom border-dark d-flex justify-content-between align-items-end">';
-                    //   switch($violation["severity"]) {
-                    //     case 1: 
-                    //       echo '<td><img  src="images/signGr.png" class ="signIcn"></td>';
-                    //       break;
-                    //     case 2: 
-                    //       echo '<td><img  src="images/signYel.png" class ="signIcn"></td>';
-                    //       break;
-                    //     case 3: 
-                    //       echo '<td><img  src="images/signRed.png" class ="signIcn"></td>';
-                    //       break;  
-                    //   }
-                    //   echo '<td class="startLine">'.$violation["type"].'</td>';
-                    //   echo '<td>'.$violation["timeV"].'</td>';
-                    //   echo '<td>'.$violation["date"].'</td>';
-                    //   echo '</tr>';
-                    // }
-              ?>
-              </table>
           </section>
       </div>
       <!-- End of Mission Details -->
