@@ -99,13 +99,14 @@ if (isset($_POST["submit"])) {
   <!-- End of navbar -->
   
   <main>
-    <!-- breadcrumbs -->
+    <!-- Breadcrumbs -->
     <ul class="breadcrumbs">
       <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
       <li><i class="bi bi-caret-right"></i><a href="violationlist.php">Violation List</a></li>
       <li><i class="bi bi-caret-right"></i><a href="#">Create Mission</a></li>
     </ul>
-
+    <!-- End of breadcrumbs -->
+  <!-- Create violation form -->
     <div class="wrapper">
       <h1>Create Violation</h1>
       <form action="#" method="post" class="grayBack">
@@ -156,6 +157,7 @@ if (isset($_POST["submit"])) {
         </div>
       </form>
     </div>
+    <!-- End of create violation form -->
     <?php
     mysqli_free_result($result1);
     ?>

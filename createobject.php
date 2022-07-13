@@ -123,7 +123,7 @@ if (!$drones) {
         <p class="fw-bold">Mission Shortcuts:</p>
         <div id="missSC"></div>
       </div>
-
+      <!-- End of Shortcuts -->
       <form action="#" method="post" class="grayBack">
         <div>
           <button id="resetBtn" class="grayBtn" type="button"><i class="bi bi-x-octagon"></i></button>

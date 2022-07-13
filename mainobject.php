@@ -4,10 +4,10 @@
   session_start();
 
   if(isset($_POST['delete'])) {
-    $query3  = "DELETE FROM tbl_activeDrones_209 where missionId= " . $_POST["mission"] ;
-    mysqli_query($connection, $query3);
-    $query4 = "UPDATE tbl_drones_209 SET isAssign = 0 WHERE droneId =" . $_POST["drone"];
-    mysqli_query($connection, $query4);
+    $queryDeleteDrone  = "DELETE FROM tbl_activeDrones_209 where missionId= " . $_POST["mission"] ;
+    mysqli_query($connection, $queryDeleteDrone);
+    $queryUpdateAssignedDrone = "UPDATE tbl_drones_209 SET isAssign = 0 WHERE droneId =" . $_POST["drone"];
+    mysqli_query($connection, $queryUpdateAssignedDrone);
     header('Location: '. URL .'dronelist.php');
   }
 
