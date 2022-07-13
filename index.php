@@ -93,7 +93,7 @@ if (isset($_SESSION["role"])) {
       <div id="person" <?php  if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                               else echo 'style:"display: flex"'; ?>>
           <?php
-            echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+            echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="person">';
             echo '<div class="text-white">';
             echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
             echo '<p>' . $_SESSION["rName"] . '</p>';
@@ -127,7 +127,7 @@ if (isset($_SESSION["role"])) {
         <form action="#" method="post" id="frm">
           <div class="form-group">
             <label for="loginMail">Email: </label>
-            <input type="email" class="form-control" name="loginMail" id="loginMail" aria-describedby="emailHelp" placeholder="Enter email">
+            <input type="email" class="form-control" name="loginMail" id="loginMail"  placeholder="Enter email">
           </div>
           <div class="form-group">
             <label for="loginPass">Password: </label>
@@ -157,21 +157,21 @@ if (isset($_SESSION["role"])) {
         <div class="d-flex justify-content-evenly">
           <a href="createobject.php?btn=btn1">
             <div class="d-flex flex-column justify-content-center align-items-center ">
-              <img src="images/drone1.png" class="quickIcn">
+              <img src="images/drone1.png" class="quickIcn" alt="drone">
               <h6>Max</h6>
               <h6>Distance</h6>
             </div>
           </a>
           <a href="createobject.php?btn=btn4">
             <div class="d-flex flex-column justify-content-center align-items-center ">
-              <img src="images/car.png" class="quickIcn">
+              <img src="images/car.png" class="quickIcn" alt="stand still">
               <h6>Stand</h6>
               <h6>Still</h6>
             </div>
           </a>
           <a href="createobject.php?btn=btn2">
             <div class="d-flex flex-column justify-content-center align-items-center ">
-              <img src="images/drone1.png" class="quickIcn">
+              <img src="images/drone1.png" class="quickIcn" alt="drone">
               <h6>High</h6>
               <h6>Altitude</h6>
             </div>
