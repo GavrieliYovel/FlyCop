@@ -20,7 +20,7 @@ if (isset($_POST["mission"])) {
   $tm = $_POST["time"];
   $dId = $_POST["drone"];
   $date = date("y.m.d");
-  $start = date('H:i:s');
+  $start = date('H:i:s', strtotime('+3 hours'));
   $end = date('H:i:s', strtotime('+' . $tm . ' minutes', strtotime($start)));
   $insertQuery  = "INSERT INTO tbl_activeDrones_209(missionType, maxAltitude, maxDistance, date, startTime, endTime, user_id, droneId) 
                 VALUES('" . $mis . "'," . $alt . "," . $dis . ",'" . $date . "','" . $start . "', '" . $end . "', " . $_SESSION['user'] . ", " . $dId . ")";
