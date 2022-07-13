@@ -46,9 +46,9 @@ function showMissionSC(missionSC) {
     }
 };
 
-// document.addEventListener("DOMContentLoaded", () => {
-    fetch("json/missonshortcuts.json")
-        .then(response => response.json())
-        .then(data => showMissionSC(data));
-// })
+
+fetch("json/missonshortcuts.json")
+    .then(response => response.json())
+    .then(data => showMissionSC(data));
+
 
