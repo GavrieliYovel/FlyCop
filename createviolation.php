@@ -25,7 +25,7 @@ if (isset($_POST["submit"])) {
   $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced + 1 WHERE missionId=" . $_POST["vMission"];
   mysqli_query($connection, $vioNumberUpdate);
   mysqli_free_result($result);
-  header('Location: ' . URL . 'violationpage.php?vId'.$dId["droneId"]);
+  header('Location: ' . URL . 'violationlist.php');
 }
 
 $missionQuery  = "SELECT * FROM tbl_activeDrones_209";
