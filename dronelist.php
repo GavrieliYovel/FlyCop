@@ -104,9 +104,7 @@ if (!$result) {
       <?php
   while ($row = mysqli_fetch_assoc($result)) {
     echo '<div class="droneObject">';
-    if ($_SESSION["role"] == 1) {
-      echo    '<a class="droneObject" href="mainobject.php?mission_id=' . $row["missionId"] . '">';
-    }
+    echo    '<a class="droneObject" href="mainobject.php?mission_id=' . $row["missionId"] . '">';
     echo      '<img class="imgStyle" src="images/drone.png" alt="">';
     echo      '<div class="col-9">';
     echo         '<h4>Drone #' . $row["droneId"] . '</h4>';
@@ -121,9 +119,7 @@ if (!$result) {
     echo            '</tr>';
     echo         '</table>';
     echo      '</div>';
-    if ($_SESSION["role"] == 1) {
-      echo     '</a>';
-    }
+    echo     '</a>';
     echo '</div>';
     echo '<hr class="my-4">';
   }

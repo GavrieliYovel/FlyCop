@@ -128,10 +128,7 @@ if (!$result) {
                   <?php
                     while ($row = mysqli_fetch_assoc($result)) {
                       echo '<li class="border-bottom border-dark ">';
-                      if ($_SESSION["role"] == 2) { // Only Hotline receptionist can see
-                        echo '<a href="violationpage.php?vId=' . $row["violationId"] . '" class="d-flex justify-content-between align-items-end">';
-                      } else
-                        echo '<div class="d-flex justify-content-between align-items-end">';
+                      echo '<a href="violationpage.php?vId=' . $row["violationId"] . '" class="d-flex justify-content-between align-items-end">';
                       switch ($row["severity"]) {
                         case 1:
                           echo '<p><img  src="images/signGr.png" class ="signIcn"></p>';
@@ -146,10 +143,7 @@ if (!$result) {
                       echo '<p class="startLine">' . $row["type"] . '</p>';
                       echo '<p>' . $row["timeV"] . '</p>';
                       echo '<p>' . $row["dateV"] . '</p>';
-                      if ($_SESSION["role"] == 2)
-                        echo '</a>';
-                      else
-                        echo '</div>';
+                      echo '</a>';
                       echo '</li>';
                     }
                     ?>

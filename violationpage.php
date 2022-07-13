@@ -216,7 +216,9 @@ if ($sViolation) {
                 <input type=hidden name="vioId" value=" <?php echo $violation["violationId"] ?>">
         </div>
 
-        <div class="buttonGroup d-flex justify-content-center">
+        <div class="buttonGroup justify-content-center" <?php   if ($_SESSION["role"] == 2) {
+                                                                    echo 'style="display: flex;"';
+                                                                }else echo 'style = "display:none;"';?> >
             <?php
             if (!isset($_POST["edit"])) {
                 echo '<button class="btn btn-danger btn-md" type="submit" name="delete" id="check">Delete</button>';

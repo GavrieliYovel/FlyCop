@@ -6,7 +6,10 @@ include "urldefine.php";
 session_start();
 if (!isset($_SESSION["role"])) {
   header('Location: ' . URL);
+}  elseif ($_SESSION["role"] != 1) {
+  header('Location:' . URL);
 }
+
 
 if (isset($_POST["submit"])) {
   $dis = $_POST["mDistance"];

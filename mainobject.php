@@ -141,8 +141,9 @@
                       <td> <?php echo $mission["maxDistance"]; ?>m</td>
                   </tr>
               </table>
-              <div class="d-flex justify-content-center">
-                  <div class="buttonGroup d-flex justify-content-center">
+              <div class="justify-content-center buttonGroup" <?php  if ($_SESSION["role"] == 1) {
+                                                                                echo 'style="display: flex;"';
+                                                                            }else echo 'style = "display:none;"';?> >
                       <form action="#" method="POST">
                           <input type=hidden name=mission value=" <?php echo $missId ?>">
                           <input type=hidden name=drone value=" <?php echo $mission["droneId"] ?>">
@@ -152,33 +153,57 @@
                           <input type=hidden name=mission value=" <?php echo $missId ?>">
                           <input class="btn btn-primary btn-md" type=submit value="Edit">
                       </form>
-                  </div>
+                  
               </div>
           </section>
           <!-- Violations Detected -->
           <section id="vioDet">
               <h2>Violations Detected: </h2>
+              <ul class="violationList" id="list">
+                  <?php
+                    while ($violation = mysqli_fetch_assoc($missionVio)) {
+                      echo '<li class="border-bottom border-dark ">';
+                      echo '<a href="violationpage.php?vId=' . $violation["violationId"] . '" class="d-flex justify-content-between align-items-end">';
+                      switch ($violation["severity"]) {
+                        case 1:
+                          echo '<p><img  src="images/signGr.png" class ="signIcn"></p>';
+                          break;
+                        case 2:
+                          echo '<p><img  src="images/signYel.png" class ="signIcn"></p>';
+                          break;
+                        case 3:
+                          echo '<p><img  src="images/signRed.png" class ="signIcn"></p>';
+                          break;
+                      }
+                      echo '<p class="startLine">' . $violation["type"] . '</p>';
+                      echo '<p>' . $violation["timeV"] . '</p>';
+                      echo '<p>' . $violation["dateV"] . '</p>';
+                      echo '</a>';
+                      echo '</li>';
+                    }
+                    ?>
+              </ul>
               <table class="d-flex flex-column">
                   <?php
-                    while($violation = mysqli_fetch_assoc($missionVio))
-                    {
-                      echo '<tr class="border-bottom border-dark d-flex justify-content-between align-items-end">';
-                      switch($violation["severity"]) {
-                        case 1: 
-                          echo '<td><img  src="images/signGr.png" class ="signIcn"></td>';
-                          break;
-                        case 2: 
-                          echo '<td><img  src="images/signYel.png" class ="signIcn"></td>';
-                          break;
-                        case 3: 
-                          echo '<td><img  src="images/signRed.png" class ="signIcn"></td>';
-                          break;  
-                      }
-                      echo '<td class="startLine">'.$violation["type"].'</td>';
-                      echo '<td>'.$violation["timeV"].'</td>';
-                      echo '<td>'.$violation["date"].'</td>';
-                      echo '</tr>';
-                    }
+                    // while($violation = mysqli_fetch_assoc($missionVio))
+                    // {
+                    //   echo '<tr class="border-bottom border-dark d-flex justify-content-between align-items-end">';
+                    //   switch($violation["severity"]) {
+                    //     case 1: 
+                    //       echo '<td><img  src="images/signGr.png" class ="signIcn"></td>';
+                    //       break;
+                    //     case 2: 
+                    //       echo '<td><img  src="images/signYel.png" class ="signIcn"></td>';
+                    //       break;
+                    //     case 3: 
+                    //       echo '<td><img  src="images/signRed.png" class ="signIcn"></td>';
+                    //       break;  
+                    //   }
+                    //   echo '<td class="startLine">'.$violation["type"].'</td>';
+                    //   echo '<td>'.$violation["timeV"].'</td>';
+                    //   echo '<td>'.$violation["date"].'</td>';
+                    //   echo '</tr>';
+                    // }
               ?>
               </table>
           </section>

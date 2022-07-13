@@ -223,10 +223,7 @@ if (isset($_SESSION["role"])) {
 
             while ($violation = mysqli_fetch_assoc($Violations)) {
               echo '<li class="border-bottom border-dark ">';
-              if ($_SESSION["role"] == 2) { // Only Hotline receptionist can see
-                echo '<a href="violationpage.php?vId=' . $violation["violationId"] . '" class="d-flex justify-content-between align-items-end">';
-              } else
-                echo '<div class="d-flex justify-content-between align-items-end">';
+              echo '<a href="violationpage.php?vId=' . $violation["violationId"] . '" class="d-flex justify-content-between align-items-end">';
               switch ($violation["severity"]) {
                 case 1:
                   echo '<p><img  src="images/signGr.png" class ="signIcn"></p>';
@@ -241,10 +238,7 @@ if (isset($_SESSION["role"])) {
               echo '<p class="startLine">' . $violation["type"] . '</p>';
               echo '<p>' . $violation["timeV"] . '</p>';
               echo '<p>' . $violation["dateV"] . '</p>';
-              if ($_SESSION["role"] == 2)
-                echo '</a>';
-              else
-                echo '</div>';
+              echo '</a>';
               echo '</li>';
             }
             ?>
