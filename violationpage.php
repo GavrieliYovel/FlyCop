@@ -1,16 +1,22 @@
 <?php
 include "config.php";
 include "urldefine.php";
+
 session_start();
+if (!isset($_SESSION["role"])) {
+    header('Location: ' . URL);
+}
 
 if(isset($_POST['delete'])) {
-    $query2  = "DELETE FROM tbl_violation_209 WHERE violationId= " . $_POST["vioId"] ;
-    mysqli_query($connection, $query2);
+    $violationDelete  = "DELETE FROM tbl_violation_209 WHERE violationId= " . $_POST["vioId"] ;
+    mysqli_query($connection, $violationDelete);
+    $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced - 1";
+    mysqli_query($connection, $vioNumberUpdate);
     header('Location: '. URL .'violationlist.php');
 }
 
 if(isset($_POST["confirm"])) {
-    $query1 = "UPDATE tbl_violation_209 SET 
+    $vioaltionUpdate = "UPDATE tbl_violation_209 SET 
                                         details= '" . $_POST["vDetails"] . "', 
                                         type ='" . $_POST["vType"] . "', 
                                         severity= " . $_POST["vSeverity"] . ",  
@@ -18,15 +24,15 @@ if(isset($_POST["confirm"])) {
                                         timeV= '" . $_POST["vTime"] . "',
                                         dateV= '" . $_POST["vDate"] . "' WHERE violationId= ". $_POST["vioId"];
 
-    mysqli_query($connection, $query1);
+    mysqli_query($connection, $vioaltionUpdate);
 }
 
 
 $vioId = $_GET["vId"];
-$query  = "SELECT * FROM tbl_violation_209  WHERE violationId=" . $vioId;
-$result = mysqli_query($connection, $query);
-if ($result) {
-    $violation = mysqli_fetch_assoc($result);
+$sViolationQuery  = "SELECT * FROM tbl_violation_209  WHERE violationId=" . $vioId;
+$sViolation = mysqli_query($connection, $sViolationQuery);
+if ($sViolation) {
+    $violation = mysqli_fetch_assoc($sViolation);
 } else die("DB query failed.");
 
 ?>
@@ -104,9 +110,9 @@ if ($result) {
     <main>
         <!-- Breadcrumbs -->
         <ul class="breadcrumbs">
-            <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-            <li><i class="bi bi-caret-right"></i></i><a href="violationlist.php">Violation List</a></li>
-            <li><i class="bi bi-caret-right"></i></i><a href="#">Violation #<?php echo $vioId ?></a></li>
+            <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="violationlist.php">Violation List</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="#">Violation #<?php echo $vioId ?></a></li>
         </ul>
         <!-- End of breadcrumbs -->
 
@@ -202,7 +208,6 @@ if ($result) {
                     <?php if (!isset($_POST["edit"])) {
                         echo '<p>' . $violation["details"] . '</p>';
                     } else {
-                        // echo '<input class="w-100" name= "vDetails" type="text" value="' . $violation["details"] . '">';
                         echo '<textarea name="vDetails" class="w-75 form-control">'.$violation["details"].'</textarea>';
                     }
 
@@ -213,8 +218,10 @@ if ($result) {
 
         <div class="buttonGroup d-flex justify-content-center">
             <?php
-            if (!isset($_POST["edit"]))
+            if (!isset($_POST["edit"])) {
+                echo '<button class="btn btn-danger btn-md" type="submit" name="delete" id="check">Delete</button>';
                 echo '<button class="btn btn-primary btn-md" name="edit">Edit</button>';
+            }
             else {
                 echo '<button class="btn btn-success btn-md" type="submit" name= "confirm">Confirm</button>';
                 echo '<button class="btn btn-warning btn-md" type="submit" name ="cancel">Cancel</button>';
@@ -226,7 +233,7 @@ if ($result) {
         <!-- End of Show/Edit Violation -->
     </main>
     <?php
-    mysqli_free_result($result);
+    mysqli_free_result($sViolation);
 
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

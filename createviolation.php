@@ -12,17 +12,26 @@ if (!isset($_SESSION["role"])) {
 if (isset($_POST["submit"])) {
   $date = date("y.m.d");
   $start = date('H:i:s');
-  $query2 = "SELECT * FROM tbl_activeDrones_209";
-  $result = mysqli_query($connection, $query2);
+  $sMissionQuery = "SELECT * FROM tbl_activeDrones_209 WHERE missionId=". $_POST["vMission"];
+  $result = mysqli_query($connection, $sMissionQuery);
   if (!$result) {
     die("DB query failed.");
   }
-  $row = mysqli_fetch_assoc($result);
-  $query3  = "INSERT INTO tbl_violation_209(missionId, droneId, type, details, severity, carNumber, timeV, dateV) 
-                VALUES(" . $_POST["vMission"] . "," . $row["droneId"] . ",'" . $_POST["vType"] . "','" . $_POST["vDetails"] . "'," . $_POST["vSeverity"] . ", " . $_POST["vCarNumber"] . ", '" . $start . "', '" . $date . "')";
-  mysqli_query($connection, $query3);
+  $dId = mysqli_fetch_assoc($result);
+
+  $violationInsert  = "INSERT INTO tbl_violation_209(missionId, droneId, type, details, severity, carNumber, timeV, dateV) 
+                VALUES(" . $_POST["vMission"] . "," . $dId["droneId"] . ",'" . $_POST["vType"] . "','" . $_POST["vDetails"] . "'," . $_POST["vSeverity"] . ", " . $_POST["vCarNumber"] . ", '" . $start . "', '" . $date . "')";
+  mysqli_query($connection, $violationInsert);
+  $vioNumberUpdate = "UPDATE tbl_activeDrones_209 SET violationDeteced = violationDeteced + 1";
+  mysqli_query($connection, $vioNumberUpdate);
   mysqli_free_result($result);
   header('Location: ' . URL . 'violationlist.php');
+}
+
+$missionQuery  = "SELECT * FROM tbl_activeDrones_209";
+$activeMission = mysqli_query($connection, $missionQuery);
+if (!$activeMission) {
+  die("DB query failed.");
 }
 ?>
 
@@ -115,13 +124,9 @@ if (isset($_POST["submit"])) {
           <label class="form-label">Choose Mission: </label>
           <select name="vMission" class="form-select" aria-label="Default select example">
             <?php
-            $query1  = "SELECT * FROM tbl_activeDrones_209";
-            $result1 = mysqli_query($connection, $query1);
-            if (!$result1) {
-              die("DB query failed.");
-            }
-            while ($row1 = mysqli_fetch_assoc($result1)) {
-              echo "<option value ='" . $row1["missionId"] . "'>Mission #" . $row1["missionId"] . "</option>";
+
+            while ($mission = mysqli_fetch_assoc($activeMission)) {
+              echo "<option value ='" . $mission["missionId"] . "'>Mission #" . $mission["missionId"] . "</option>";
             }
             ?>
           </select>
@@ -159,7 +164,7 @@ if (isset($_POST["submit"])) {
     </div>
     <!-- End of create violation form -->
     <?php
-    mysqli_free_result($result1);
+    mysqli_free_result($activeMission);
     ?>
 
 

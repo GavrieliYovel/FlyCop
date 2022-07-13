@@ -3,7 +3,10 @@
 
 include "config.php";
 include "urldefine.php";
-
+session_start();
+if (!isset($_SESSION["role"])) {
+  header('Location: ' . URL);
+}
 
 if (isset($_POST["submit"])) {
   $dis = $_POST["mDistance"];
@@ -28,15 +31,6 @@ $result = mysqli_query($connection, $query);
 if ($result) {
   $mission = mysqli_fetch_assoc($result);
 } else die("DB query failed.");
-
-// $durQuery = "SELECT TIMEDIFF(endTime, startTime) AS dur FROM tbl_activeDrones_209 WHERE missionId=". $_POST["mission"];
-// $result = mysqli_query($connection, $durQuery);
-// if($result) {
-//   $missionDur = mysqli_fetch_assoc($result);
-// }
-// else die("DB query failed.");
-
-// echo floatval($missionDur["dur"]);
 
 $to_time = strtotime($mission["endTime"]);
 $from_time = strtotime("$mission[startTime]");
@@ -117,12 +111,12 @@ $dur = round(abs($to_time - $from_time) / 60, 2);
   <main>
     <!-- Breadcrumbs -->
     <ul class="breadcrumbs">
-      <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-      <li><i class="bi bi-caret-right"></i></i><a href="dronelist.php">Active Drones</a></li>
-      <li><i class="bi bi-caret-right"></i></i><a href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>">Drone #<?php echo $mission["droneId"]; ?></a></li>
-      <li><i class="bi bi-caret-right"></i></i><a href="#">Edit</a></li>
+      <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
+      <li><i class="bi bi-caret-right"></i><a href="dronelist.php">Active Drones</a></li>
+      <li><i class="bi bi-caret-right"></i><a href="mainobject.php?mission_id=<?php echo $_POST["mission"]; ?>">Drone #<?php echo $mission["droneId"]; ?></a></li>
+      <li><i class="bi bi-caret-right"></i><a href="#">Edit</a></li>
     </ul>
-    <!-- End of breadcrumbs -->
+    <!-- End of Breadcrumbs -->
     <!-- Edit mission form -->
     <div id="editObj">
       <div class="grayBack">
@@ -158,7 +152,7 @@ $dur = round(abs($to_time - $from_time) / 60, 2);
             </div>
           </div>
           <div class="d-flex align-items-center">
-            <p>20 mins </p><input type="range" value="<?php echo $dur; ?>" name="mTime" class="form-range" min="20" max="300" step="5" oninput="func(0, this.value);">
+            <p>20 mins </p><input type="range" value="<?php echo $dur; ?>" name="mTime" class="form-range" min="20" max="300" step="5" oninput="updateValues(0, this.value);">
             <p> 300 mins</p>
           </div>
         </div>
@@ -170,7 +164,7 @@ $dur = round(abs($to_time - $from_time) / 60, 2);
             </div>
           </div>
           <div class="d-flex align-items-center">
-            <p>3 m </p><input type="range" name="mAltitude" class="form-range align-self-end" min="3" max="10" value="<?php echo $mission["maxAltitude"] ?>" step="0.2" oninput="func(1, this.value);">
+            <p>3 m </p><input type="range" name="mAltitude" class="form-range align-self-end" min="3" max="10" value="<?php echo $mission["maxAltitude"] ?>" step="0.2" oninput="updateValues(1, this.value);">
             <p> 10 m</p>
           </div>
         </div>
@@ -182,7 +176,7 @@ $dur = round(abs($to_time - $from_time) / 60, 2);
             </div>
           </div>
           <div class="d-flex align-items-center">
-            <p>25 m </p><input type="range" name="mDistance" class="form-range align-self-end" min="25" max="2500" value="<?php echo $mission["maxDistance"] ?>" step="1" oninput="func(2, this.value);" id="maxDistance">
+            <p>25 m </p><input type="range" name="mDistance" class="form-range align-self-end" min="25" max="2500" value="<?php echo $mission["maxDistance"] ?>" step="5" oninput="updateValues(2, this.value);" id="maxDistance">
             <p> 2500 m</p>
           </div>
         </div>

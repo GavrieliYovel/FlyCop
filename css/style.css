@@ -49,8 +49,7 @@ a:hover {
 }
 
 .navbar-brand {
-    /* background-image: url("/students/2021-2022/web1/dev_209/images/logo.png"); */
-    background-image: url("/FlyCop/images/logo.png");
+    background-image: url("/students/2021-2022/web1/dev_209/images/logo.png");
     width: 175px;
     height: 77px;
     background-size: cover;
@@ -184,7 +183,7 @@ ul.breadcrumbs li a:hover {
 }
 
 #missonSetTbl {
-    width: 100%;
+    width: 50%;
 }
 
 #vioDet {
@@ -349,9 +348,6 @@ ul.breadcrumbs li a:hover {
     margin-bottom: 20px;
 }
 
-/* .hotlineQuick {
-    display: flex;
-} */
 
 .homeDiv {
     width: 50%;

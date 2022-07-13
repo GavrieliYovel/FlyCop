@@ -1,7 +1,11 @@
 <?php
 include "config.php";
 include "urldefine.php";
+
 session_start();
+if (!isset($_SESSION["role"])) {
+  header('Location: ' . URL);
+}
 
 if (!empty($_POST["sort"])) {
   switch ($_POST["sort"]) {
@@ -57,10 +61,9 @@ if (!$result) {
                                                   else echo 'style:"display: flex"'; ?>>
                         <li class="nav-item">
                             <?php if ($_SESSION["role"] == 1)
-                echo '<a class="nav-link" href="createobject.php">New Mission</a>';
-              elseif ($_SESSION["role"] == 2)
-                echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; ?>
-
+                                echo '<a class="nav-link" href="createobject.php">New Mission</a>';
+                                elseif ($_SESSION["role"] == 2)
+                                echo '<a class="nav-link" href="createviolation.php">New Violation</a>'; ?>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " href="dronelist.php">Active Drones</a>
@@ -75,11 +78,11 @@ if (!$result) {
             <div id="person" <?php if (!isset($_SESSION["user"])) echo 'style="display: none;"';
                         else echo 'style:"display: flex"'; ?>>
                 <?php
-        echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
-        echo '<div class="text-white">';
-        echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
-        echo '<p>' . $_SESSION["rName"] . '</p>';
-        ?>
+                  echo '<img id="personImg" src="' . $_SESSION["img"] . '" alt="">';
+                  echo '<div class="text-white">';
+                  echo '<h5>' . $_SESSION["fName"] . ' ' . $_SESSION["lName"] . '</h5>';
+                  echo '<p>' . $_SESSION["rName"] . '</p>';
+                  ?>
                 <div>
                     <a href="logout.php" title="Logout"><i class="bi bi-door-closed-fill"></i></a>
                 </div>
@@ -97,8 +100,8 @@ if (!$result) {
     <main>
         <!-- Breadcrumbs -->
         <ul class="breadcrumbs">
-            <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-            <li><i class="bi bi-caret-right"></i></i><a href="#">Violation List</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
+            <li><i class="bi bi-caret-right"></i><a href="#">Violation List</a></li>
         </ul>
         <!-- End of breadcrumbs -->
 

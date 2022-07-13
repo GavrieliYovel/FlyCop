@@ -1,6 +1,7 @@
 <?php
 include "config.php";
 include "urldefine.php";
+
 session_start();
 if (!isset($_SESSION["user"])) {
   if (!empty($_POST["loginMail"])) {
@@ -114,7 +115,7 @@ if (isset($_SESSION["role"])) {
   <main>
     <!-- Breadcrumbs -->
     <ul class="breadcrumbs">
-      <li><i class="bi bi-caret-right"></i></i><a href="#">Home Screen</a></li>
+      <li><i class="bi bi-caret-right"></i><a href="#">Home Screen</a></li>
     </ul>
     <!-- End of Breadcrumbs -->
     <div id="mainObjContent">

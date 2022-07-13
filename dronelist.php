@@ -1,6 +1,7 @@
 <?php
 include "urldefine.php";
 include "config.php";
+
 session_start();
 if (!isset($_SESSION["role"])) {
   header('Location: ' . URL);
@@ -86,8 +87,8 @@ if (!$result) {
 
   <!-- Breadcrumbs -->
   <ul class="breadcrumbs">
-      <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-      <li><i class="bi bi-caret-right"></i></i><a href="#">Active Drones</a></li>
+      <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
+      <li><i class="bi bi-caret-right"></i><a href="#">Active Drones</a></li>
   </ul>
   <!-- End of Breadcrumbs -->
   <!-- Active drones list -->

@@ -1,6 +1,6 @@
 window.onload = () => {
     checkBeforeDelete();
-}
+};
 
 function checkBeforeDelete() {
     document.getElementById("check").onclick = () => {

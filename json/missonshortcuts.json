@@ -6,7 +6,7 @@
       "type": "Patrol",
       "maxAltitude": 7,
       "duration": 60,
-      "maxDistance": 2000
+      "maxDistance": 2500
     },
     {
       "missionName": "High Altitude",

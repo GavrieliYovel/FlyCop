@@ -1,6 +1,7 @@
 <?php
 include "config.php";
 include "urldefine.php";
+
 session_start();
 if (!isset($_SESSION["role"])) {
   header('Location: ' . URL);
@@ -48,7 +49,7 @@ if (!$drones) {
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet">
-
+  <script src="scripts/loadshortcuts.js"></script>
 
   <title>Create Mission</title>
 </head>
@@ -147,7 +148,7 @@ if (!$drones) {
             </div>
           </div>
           <div class="d-flex align-items-center">
-            <p>20 mins </p><input type="range" name="time" class="form-range" min="20" max="300" value="125" step="5" oninput="func(0, this.value);">
+            <p>20 mins </p><input type="range" name="time" class="form-range" min="20" max="300" value="125" step="5" oninput="updateValues(0, this.value);">
             <p> 300 mins</p>
           </div>
         </div>
@@ -160,7 +161,7 @@ if (!$drones) {
             </div>
           </div>
           <div class="d-flex align-items-center">
-            <p>3 m </p><input type="range" name="altitude" class="form-range align-self-end" min="3" max="10" value="5.2" step="0.2" oninput="func(1, this.value);">
+            <p>3 m </p><input type="range" name="altitude" class="form-range align-self-end" min="3" max="10" value="5.2" step="0.2" oninput="updateValues(1, this.value);">
             <p> 10 m</p>
           </div>
         </div>
@@ -173,7 +174,7 @@ if (!$drones) {
             </div>
           </div>
           <div class="d-flex align-items-center">
-            <p>25 m </p><input type="range" name="distance" class="form-range align-self-end" min="25" max="2500" value="500" step="1" oninput="func(2, this.value);" id="maxDistance">
+            <p>25 m </p><input type="range" name="distance" class="form-range align-self-end" min="25" max="2500" value="500" step="1" oninput="updateValues(2, this.value);" id="maxDistance">
             <p> 2500 m</p>
           </div>
         </div>

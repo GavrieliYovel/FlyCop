@@ -1,7 +1,11 @@
 <?php
   include "config.php";
   include "urldefine.php";
+
   session_start();
+  if (!isset($_SESSION["role"])) {
+    header('Location: ' . URL);
+  }
 
   if(isset($_POST['delete'])) {
     $queryDeleteDrone  = "DELETE FROM tbl_activeDrones_209 where missionId= " . $_POST["mission"] ;
@@ -12,16 +16,16 @@
   }
 
   $missId = $_GET["mission_id"];
-  $query1  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_users_209 using(user_id) where missionId=" . $missId;
-  $result1 = mysqli_query($connection, $query1);
-  if($result1) {
-      $row1 = mysqli_fetch_assoc($result1);
+  $missionUserQuery  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_users_209 using(user_id) where missionId=" . $missId;
+  $missionUser = mysqli_query($connection, $missionUserQuery);
+  if($missionUser) {
+      $mission = mysqli_fetch_assoc($missionUser);
   }
   else die("DB query failed.");
 
-  $query2  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_violation_209 using(missionId) where missionId=" . $missId;
-  $result2 = mysqli_query($connection, $query2);
-  if(!$result2) {
+  $missionVioQuery  = "SELECT * FROM tbl_activeDrones_209 INNER JOIN tbl_violation_209 using(missionId) where missionId=" . $missId;
+  $missionVio = mysqli_query($connection, $missionVioQuery);
+  if(!$missionVio) {
     die("DB query failed.");
   }
 ?>
@@ -38,7 +42,7 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
-    <title>Drone #<?php echo $row1["droneId"]?></title>
+    <title>Drone #<?php echo $mission["droneId"]?></title>
 </head>
 
 <body>
@@ -95,50 +99,53 @@
   <!-- End of navbar -->
 
   <main>
-      <!-- breadcrumbs -->
+      <!-- Breadcrumbs -->
       <ul class="breadcrumbs">
-          <li><i class="bi bi-caret-right"></i></i><a href="index.php">Home Screen</a></li>
-          <li><i class="bi bi-caret-right"></i></i><a href="dronelist.php">Active Drones</a></li>
-          <li><i class="bi bi-caret-right"></i></i><a href="#">Drone #<?php echo $row1["droneId"]?></a></li>
+          <li><i class="bi bi-caret-right"></i><a href="index.php">Home Screen</a></li>
+          <li><i class="bi bi-caret-right"></i><a href="dronelist.php">Active Drones</a></li>
+          <li><i class="bi bi-caret-right"></i><a href="#">Drone #<?php echo $mission["droneId"]?></a></li>
       </ul>
+      <!-- End of Breadcrumbs -->
+      <!-- Mission Details -->
       <div id="mainObjContent">
-          <h1>Drone #<?php echo $row1["droneId"]?></h1>
+          <h1>Drone #<?php echo $mission["droneId"]?></h1>
           <table id="missionProperties">
               <tr>
                   <th>Mission:</th>
-                  <td><?php echo $row1["missionType"]; ?></td>
+                  <td><?php echo $mission["missionType"]; ?></td>
                   <th>Start Time:</th>
-                  <td><?php echo $row1["startTime"]; ?></td>
+                  <td><?php echo $mission["startTime"]; ?></td>
               </tr>
               <tr>
                   <th>Set by:</th>
-                  <td><?php echo $row1["firstName"]; ?></td>
+                  <td><?php echo $mission["firstName"]; ?></td>
                   <th>End time:</th>
-                  <td><?php echo $row1["endTime"]; ?></td>
+                  <td><?php echo $mission["endTime"]; ?></td>
               </tr>
           </table>
           <!-- Mission Settings  -->
           <section id="missSet">
               <h2>Mission Settings</h2>
+              <h4>Mission# <?php echo $mission["missionId"]; ?></h4>
               <table id="missonSetTbl">
                   <tr>
                       <th>Flight mode:</th>
-                      <td><?php echo $row1["missionType"]; ?></td>
+                      <td><?php echo $mission["missionType"]; ?></td>
                   </tr>
                   <tr>
                       <th>Avg. Altitude:</th>
-                      <td><?php echo $row1["maxAltitude"]; ?>m</td>
+                      <td><?php echo $mission["maxAltitude"]; ?>m</td>
                   </tr>
                   <tr>
                       <th>Max. Distance:</th>
-                      <td> <?php echo $row1["maxDistance"]; ?>m</td>
+                      <td> <?php echo $mission["maxDistance"]; ?>m</td>
                   </tr>
               </table>
               <div class="d-flex justify-content-center">
                   <div class="buttonGroup d-flex justify-content-center">
                       <form action="#" method="POST">
                           <input type=hidden name=mission value=" <?php echo $missId ?>">
-                          <input type=hidden name=drone value=" <?php echo $row1["droneId"] ?>">
+                          <input type=hidden name=drone value=" <?php echo $mission["droneId"] ?>">
                           <input class="btn btn-danger btn-md" type=submit value=Delete name=delete id="check">
                       </form>
                       <form action="editobject.php" method="POST">
@@ -153,10 +160,10 @@
               <h2>Violations Detected: </h2>
               <table class="d-flex flex-column">
                   <?php
-                    while($row2 = mysqli_fetch_assoc($result2))
+                    while($violation = mysqli_fetch_assoc($missionVio))
                     {
                       echo '<tr class="border-bottom border-dark d-flex justify-content-between align-items-end">';
-                      switch($row2["severity"]) {
+                      switch($violation["severity"]) {
                         case 1: 
                           echo '<td><img  src="images/signGr.png" class ="signIcn"></td>';
                           break;
@@ -167,19 +174,20 @@
                           echo '<td><img  src="images/signRed.png" class ="signIcn"></td>';
                           break;  
                       }
-                      echo '<td class="startLine">'.$row2["type"].'</td>';
-                      echo '<td>'.$row2["timeV"].'</td>';
-                      echo '<td>'.$row2["date"].'</td>';
+                      echo '<td class="startLine">'.$violation["type"].'</td>';
+                      echo '<td>'.$violation["timeV"].'</td>';
+                      echo '<td>'.$violation["date"].'</td>';
                       echo '</tr>';
                     }
               ?>
               </table>
           </section>
       </div>
+      <!-- End of Mission Details -->
   </main>
   <?php
-   mysqli_free_result($result1);
-   mysqli_free_result($result2);
+   mysqli_free_result($missionUser);
+   mysqli_free_result($missionVio);
   ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
