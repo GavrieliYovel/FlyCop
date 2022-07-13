@@ -1,3 +1,16 @@
+function getBtnId() {
+    let aKeyValue = window.location.search.substring(1).split("&");
+    let btnId = aKeyValue[0].split("=")[1];
+    return btnId;
+};
+
+
+function clickBtn() {
+    let btn = getBtnId();
+    document.getElementById(btn).click();
+};
+
+
 function showMissionSC(missionSC) {
 
     let scDiv = document.getElementById("missSC");
@@ -28,10 +41,14 @@ function showMissionSC(missionSC) {
         idx++;
     }
 
-
+    if (getBtnId()) {
+        clickBtn();
+    }
 };
 
+// document.addEventListener("DOMContentLoaded", () => {
+    fetch("json/missonshortcuts.json")
+        .then(response => response.json())
+        .then(data => showMissionSC(data));
+// })
 
-fetch("json/missonshortcuts.json")
-    .then(response => response.json())
-    .then(data => showMissionSC(data));
